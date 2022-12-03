@@ -7,10 +7,10 @@ export default defineConfig({
   server: {
     proxy: {
       // string shorthand
-      '/signup': 'http://localhost:8080',
-      '/login': 'http://localhost:8080',
-      '/user': 'http://localhost:8080',
-      '/logout': 'http://localhost:8080',
+      '/signup': 'http://localhost:8000',
+      '/login': 'http://localhost:8000',
+      '/user': 'http://localhost:8000',
+      '/logout': 'http://localhost:8000',
     }
   }
 })
