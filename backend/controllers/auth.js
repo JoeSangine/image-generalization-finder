@@ -6,7 +6,7 @@ exports.getLogin = (req, res) => {
   if (req.user) {
     return res.redirect("/profile");
   }
-  res.render("login", {
+  res.redirect("login", {
     title: "Login",
   });
 };
@@ -60,11 +60,11 @@ exports.getSignup = (req, res) => {
   if (req.user) {
     return res.redirect("/profile");
   }
-  res.render("signup", {
-    title: "Create Account",
-  });
+  return res.redirect("/");
 };
-
+exports.getUser = (req, res) => {
+  return res.json(req.user || null)
+}
 exports.postSignup = (req, res, next) => {
   const validationErrors = [];
   if (!validator.isEmail(req.body.email))

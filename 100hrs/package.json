@@ -1,0 +1,45 @@
+{
+  "name": "Rascal",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@iconscout/react-unicons": "^1.1.6",
+    "@iconscout/unicons": "^4.0.1",
+    "bcrypt": "^5.1.0",
+    "cloudinary": "^1.32.0",
+    "connect-mongo": "^4.6.0",
+    "daisyui": "^2.37.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.3",
+    "method-override": "^3.0.0",
+    "mongodb": "^4.11.0",
+    "mongoose": "^6.7.0",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "node": "^19.0.0",
+    "nodemon": "^2.0.20",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "react": "^18.2.0",
+    "react-daisyui": "^2.4.5",
+    "react-dom": "^18.2.0",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.22",
+    "@types/react-dom": "^18.0.7",
+    "@vitejs/plugin-react": "^2.2.0",
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.18",
+    "tailwindcss": "^3.2.1",
+    "vite": "^3.2.0"
+  }
+}
