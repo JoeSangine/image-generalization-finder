@@ -1,16 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Welcome from './Welcome'
-import Images from './Images'
-import Input from './input'
-import Login from './Login'
-import './index.css'
+import Api from './components/Api'
+import Login from './components/Login'
+import Signup from './components/Signup'
+import './assets/index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Welcome />
+    <Signup />
     <Login />
-    <Images />
-    <Input />
+    <Api />
   </React.StrictMode>
 )

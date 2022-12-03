@@ -1,8 +1,8 @@
-export default function Images() {
+export default function Images({ real, cartoon, famous }) {
     return <div className='flex mt-60'>
 
         <div className="card w-96 bg-base-100 shadow-xl flex-auto ">
-            <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
+            <figure><img src={real} alt="Real" /></figure>
             <div className="card-body text-center">
                 <h2 >
                     Shoes!
@@ -17,7 +17,7 @@ export default function Images() {
 
 
         <div className="card w-96 bg-base-100 shadow-xl flex-auto">
-            <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
+            <figure><img src={cartoon} alt="Cartoon" /></figure>
             <div className="card-body text-center">
                 <h2 >
                     Shoes!
@@ -32,7 +32,7 @@ export default function Images() {
 
 
         <div className="card w-96 bg-base-100 shadow-xl flex-auto">
-            <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
+            <figure><img src={famous} alt="Famous" /></figure>
             <div className="card-body text-center">
                 <h2 >
                     Shoes!
