@@ -7,23 +7,23 @@ export default function Api() {
   const [famousRes, famousSetRes] = useState([])
   const [badImages, setBadImages] = useState([])
 
-
   useEffect(() => {
     fetch('/bad-images').then(response => response.json())
       .then(badImages => setBadImages(badImages))
   }, [])
 
-  const fetchRequestCartoon = async () => {
+  const fetchRequestCartoon = async (newBadImages = badImages) => {
     const data = await fetch(`https://api.openverse.engineering/v1/images?q=cartoon%20${img}&category=illustration,digitized_artwork`, {
       method: 'GET',
       headers: {
         "Authorization": import.meta.env.VITE_OPENVERSE_AUTHKEY
       },
     })
-    console.log(data)
     const dataJ = await data.json()
-    const result = dataJ.results
-    // console.log(result)
+    const result = dataJ.results.filter(imageobject => {
+      return !newBadImages.some(badImage => { return badImage.BadURL === imageobject.url })
+    })
+    console.log(result, newBadImages)
     cartSetRes(result)
   }
 
@@ -43,17 +43,17 @@ export default function Api() {
     setRes(result)
   }
 
-  const fetchRequestFamous = async () => {
+  const fetchRequestFamous = async (newBadImages = badImages) => {
     const data = await fetch(`https://api.openverse.engineering/v1/images?q=famous%20${img}`, {
       method: 'GET',
       headers: {
         "Authorization": import.meta.env.VITE_OPENVERSE_AUTHKEY
       },
     })
-
-
     const dataJ = await data.json()
-    const result = dataJ.results
+    const result = dataJ.results.filter(imageobject => {
+      return !newBadImages.some(badImage => { return badImage.BadURL === imageobject.url })
+    })
     // console.log(result)
     famousSetRes(result)
   }
@@ -107,7 +107,7 @@ export default function Api() {
         placeholder="Search Anything..."
       />
     </form>
-    <div className="text-right">
+    <div className="text-right pr-16 ">
       <input
         className="col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 border-dark "
         type="text"

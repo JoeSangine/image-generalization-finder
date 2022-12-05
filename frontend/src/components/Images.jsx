@@ -5,11 +5,11 @@ export default function Images({ real, cartoon, famous, keyword, addBadImage, })
             <figure><img src={real} alt="Real" /></figure>
             <div className="card-body text-center">
                 <h2>
-                    {'real ' + keyword}
+                    {'Real ' + keyword}
                     <button onClick={() => addBadImage(real, 'real')}
                         className="badge badge-secondary"> REROLL</button>
                 </h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                <h3>ONLY CLICK REROLL IF YOU NEVER WANT IMAGE TO APPEAR AGAIN</h3>
                 <div className="card-actions justify-end">
 
                 </div>
@@ -21,11 +21,11 @@ export default function Images({ real, cartoon, famous, keyword, addBadImage, })
             <figure><img src={cartoon} alt="Cartoon" /></figure>
             <div className="card-body text-center">
                 <h2>
-                    {'cartoon ' + keyword}
-                    <button onClick={() => addBadImage(cartoon, 'real')}
+                    {'Cartoon ' + keyword}
+                    <button onClick={() => addBadImage(cartoon, 'cartoon')}
                         className="badge badge-secondary"> REROLL</button>
                 </h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                <h3>ONLY CLICK REROLL IF YOU NEVER WANT IMAGE TO APPEAR AGAIN</h3>
                 <div className="card-actions justify-end">
 
                 </div>
@@ -37,11 +37,11 @@ export default function Images({ real, cartoon, famous, keyword, addBadImage, })
             <figure><img src={famous} alt="Famous" /></figure>
             <div className="card-body text-center">
                 <h2>
-                    {'famous ' + keyword}
-                    <button onClick={() => addBadImage(famous, 'real')}
+                    {'Famous ' + keyword}
+                    <button onClick={() => addBadImage(famous, 'famous')}
                         className="badge badge-secondary"> REROLL</button>
                 </h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
+                <p>For the Famous Image I need help. Can you please input a famous character in the text box below so that we can save it the next time you use this app :)</p>
                 <div className="card-actions justify-end">
 
                 </div>
