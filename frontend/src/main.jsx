@@ -10,5 +10,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Signup />
     <Login />
     <Api />
+
   </React.StrictMode>
 )

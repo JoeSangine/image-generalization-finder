@@ -1,6 +1,7 @@
 const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/User");
+const BadImage = require("../models/BadImage");
 
 exports.getLogin = (req, res) => {
   if (req.user) {
@@ -116,3 +117,8 @@ exports.postSignup = (req, res, next) => {
     }
   );
 };
+exports.getBadImages = async (req, res) => {
+  const badImages = await BadImage.find({ user: req.user.id })
+  return res.json(badImages)
+
+}

@@ -2,8 +2,6 @@ import { useEffect, useState } from "react"
 
 export default function Login() {
     const [user, setUser] = useState(undefined);
-
-
     useEffect(() => {
         fetch('/user').then(response => response.json())
             .then(user => setUser(user))

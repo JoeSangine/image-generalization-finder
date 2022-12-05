@@ -11,6 +11,8 @@ export default defineConfig({
       '/login': 'http://localhost:8000',
       '/user': 'http://localhost:8000',
       '/logout': 'http://localhost:8000',
+      '/bad-images': 'http://localhost:8000',
+      '/BadImages': 'http://localhost:8000',
     }
   }
 })
