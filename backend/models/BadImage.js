@@ -4,7 +4,7 @@ const BadImageSchema = new mongoose.Schema({
 
   BadURL: {
     type: String,
-    require: true,
+    required: true,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

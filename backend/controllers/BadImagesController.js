@@ -6,7 +6,7 @@ module.exports = {
     console.log(req.body)
     try {
       const newBadImage = await BadImage.create({
-        user: req.user.id,
+        user: req.user?.id,
         BadURL: req.body.BadURL,
 
       });

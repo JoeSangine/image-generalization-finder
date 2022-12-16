@@ -118,7 +118,7 @@ exports.postSignup = (req, res, next) => {
   );
 };
 exports.getBadImages = async (req, res) => {
-  const badImages = await BadImage.find({ user: req.user.id })
+  const badImages = await BadImage.find({ user: req.user?.id })
   return res.json(badImages)
 
 }

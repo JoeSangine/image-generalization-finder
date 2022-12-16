@@ -13,6 +13,8 @@ export default defineConfig({
       '/logout': 'http://localhost:8000',
       '/bad-images': 'http://localhost:8000',
       '/BadImages': 'http://localhost:8000',
+      '/famous-image': 'http://localhost:8000'
+
     }
   }
 })

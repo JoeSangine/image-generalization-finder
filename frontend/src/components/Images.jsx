@@ -1,4 +1,4 @@
-export default function Images({ real, cartoon, famous, keyword, addBadImage, }) {
+export default function Images({ real, cartoon, famous, keyword, addBadImage, famousTrueOrFalse }) {
     return <div className='flex mt-60'>
 
         <div className="card w-96 bg-base-100 shadow-xl flex-auto ">
@@ -41,7 +41,9 @@ export default function Images({ real, cartoon, famous, keyword, addBadImage, })
                     <button onClick={() => addBadImage(famous, 'famous')}
                         className="badge badge-secondary"> REROLL</button>
                 </h2>
-                <p>For the Famous Image I need help. Can you please input a famous character in the text box below so that we can save it the next time you use this app :)</p>
+
+                {!famousTrueOrFalse && <p>For the Famous Image I need help. Can you please input a famous character in the text box below so that we can save it the next time you use this app :)</p>}
+
                 <div className="card-actions justify-end">
 
                 </div>
