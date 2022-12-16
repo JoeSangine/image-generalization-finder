@@ -1,9 +1,7 @@
 Image Generalization Finder
-Write a short sentence or two about this project and what it does. Be sure to include a link and a screenshot (we're front end devs so we can actually see our work!).
+This app is built to help children with Autism in their development and education. My wife is a behavioral technition for children with Autism and they often use an excersize that requires her and many of her coworkers to need to manually get images to use. Generalization is what this is going to help with. This app will display 3 images based off of a single input. For example, if you type in the word dog you will recieve a Real dog, Generic Cartoon dog, and a Famous dog. All three containers will always be tied to the words Real, Cartoon, and Famous. This will save behavioral techs and anyone who is helping children learn generalization a ton of excess time and effort that could be used helping the children!
 
 Link to project: Coming soon RIP HEROKU free
-
-alt tag
 
 How It's Made:
 Tech used: HTML, CSS, JavaScript, React, Vite, Node.js, Express
