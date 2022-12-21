@@ -4,7 +4,7 @@
   "description": "rascal",
   "main": "index.js",
   "scripts": {
-    "postinstall": "npm --prefix backend install && npm --prefix frontend install",
+    "postinstall": "CGO_ENABLED=0 npm --prefix backend install && npm --prefix frontend install",
     "start": "npm --prefix backend run start",
     "build":"npm --prefix frontend run build"
     
