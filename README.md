@@ -15,6 +15,7 @@ Optimizations
 <li>Update components to be more robust</li>
 <li>Add a ton of custom hooks to cleanup the Api.jsx file(its a mess I know)</li>
 <li>Get deployment ready again</li>
+<li>Check out different apis that dont require daily auth</li>
 </ul>
 
 
