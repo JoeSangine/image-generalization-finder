@@ -6,12 +6,12 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      // string shorthand
       '/api': 'http://localhost:8000',
-      
-
     }
-  }
+  },
+   build: {
+    outDir: '../backend/public'
+   }
 })
 
 
