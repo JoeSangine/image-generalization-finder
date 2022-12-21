@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react"
 
+
 export default function Login() {
     const [user, setUser] = useState(undefined);
     useEffect(() => {
-        fetch('/user').then(response => response.json())
+        fetch('/api/user').then(response => response.json())
             .then(user => setUser(user))
 
     }, [])
     if (user !== null) {
-        return <a href="/logout">LOGOUT</a>
+        return <button onClick={()=>fetch('/api/logout').then(user=> setUser(null))}>LOGOUT</button>
     }
     else if (user === undefined) {
         return <h1>YOUS ALREADY ON FOOL</h1>
     }
 
-    return <form className="flex" action="/login" method="POST">
+    return <form className="flex" action="/api/login" method="POST">
         <div className="mb-3">
             <label htmlFor="exampleInputEmail2" className="form-label">Email address</label>
             <input

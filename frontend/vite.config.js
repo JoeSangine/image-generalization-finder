@@ -7,13 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       // string shorthand
-      '/signup': 'http://localhost:8000',
-      '/login': 'http://localhost:8000',
-      '/user': 'http://localhost:8000',
-      '/logout': 'http://localhost:8000',
-      '/bad-images': 'http://localhost:8000',
-      '/BadImages': 'http://localhost:8000',
-      '/famous-image': 'http://localhost:8000'
+      '/api': 'http://localhost:8000',
+      
 
     }
   }

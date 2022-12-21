@@ -8,12 +8,12 @@ export default function Api() {
   const [badImages, setBadImages] = useState([])
   const [famousImages, setFamousImages] = useState()
   useEffect(() => {
-    fetch('/bad-images').then(response => response.json())
+    fetch('/api/bad-images').then(response => response.json())
       .then(badImages => setBadImages(badImages))
   }, [])
   useEffect(() => {
     if (!img) return
-    fetch(`/famous-image/${img}`).then(response => response.json())
+    fetch(`/api/famous-image/${img}`).then(response => response.json())
       .then(famousImages => setFamousImages(famousImages))
   }, [img])
 
@@ -77,7 +77,7 @@ export default function Api() {
     setImg("")
   }
   const addBadImage = async (url, type) => {
-    const response = await fetch('/BadImages/createBadImage', {
+    const response = await fetch('/api/BadImages/createBadImage', {
       headers: {
         "Content-Type": 'application/json'
       },
@@ -99,7 +99,7 @@ export default function Api() {
   }
 
   const addFamousImage = async (keyword) => {
-    const response = await fetch('/famous-image/createFamousImage', {
+    const response = await fetch('/api/famous-image/createFamousImage', {
       headers: {
         "Content-Type": 'application/json'
       },

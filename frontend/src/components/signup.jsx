@@ -1,6 +1,6 @@
 export default function Signup() {
     return <div className="flex flex-col-reverse">
-        <form className="flex" action="/signup" method="POST">
+        <form className="flex" action="/api/signup" method="POST">
             <div className="mb-3">
                 <label htmlFor="userName" className="form-label">User Name</label>
                 <input type="text" className="form-control" id="userName" name="userName" />
