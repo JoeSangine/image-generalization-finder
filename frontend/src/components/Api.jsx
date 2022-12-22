@@ -154,34 +154,37 @@ export default function Api() {
         addBadImage={reRollButton}
         famousTrueOrFalse={famousQuery}
       />
-      <form
-        className="text-center"
-        onSubmit={(e) => {
-          e.preventDefault();
-          setQuery(e.target.elements[0].value);
-        }}
-      >
-        <input
-          className="col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 border-dark"
-          type="text"
-          placeholder="Search Anything..."
-        />
-      </form>
-      {!famousQuery && (
+      <div className="flex justify-center">
         <form
+          className="text-center"
           onSubmit={(e) => {
             e.preventDefault();
-            addFamousImage(e.target.elements[0].value);
+            setQuery(e.target.elements[0].value);
           }}
-          className="text-right pr-16 "
         >
           <input
-            className="col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 border-dark "
+            className="col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 border-dark"
             type="text"
-            placeholder="Please Enter The name of Famous thing you want"
+            placeholder="Search Anything..."
           />
         </form>
-      )}
+
+        {!famousQuery && (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              addFamousImage(e.target.elements[0].value);
+            }}
+            className="text-right pl-16 "
+          >
+            <input
+              className="col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 border-dark "
+              type="text"
+              placeholder="Please Enter The name of Famous thing you want"
+            />
+          </form>
+        )}
+      </div>
     </div>
   );
 }
