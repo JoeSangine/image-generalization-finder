@@ -151,7 +151,7 @@ export default function Api() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <span></span>
         <form
-          className="text-center btn-group"
+          className="text-center"
           onSubmit={(e) => {
             e.preventDefault();
             setQuery(e.target.elements[0].value);
@@ -163,7 +163,7 @@ export default function Api() {
             placeholder="Search for Images Here...
             "
           />
-          <button type="submit" className="btn btn-secondary">Submit</button>
+          <button type="submit" className="btn btn-secondary ml-4">Submit</button>
         </form>
 
 
