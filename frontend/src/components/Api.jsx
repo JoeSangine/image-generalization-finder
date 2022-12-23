@@ -151,7 +151,7 @@ export default function Api() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <span></span>
         <form
-          className="text-center"
+          className="text-center btn-group"
           onSubmit={(e) => {
             e.preventDefault();
             setQuery(e.target.elements[0].value);
@@ -163,8 +163,20 @@ export default function Api() {
             placeholder="Search for Images Here...
             "
           />
+          <button type="submit" className="btn btn-secondary">Submit</button>
         </form>
 
+
+      </div>
+
+      <Images
+        famous={famousRes[0]?.url}
+        cartoon={cartres[0]?.url}
+        real={res[0]?.url}
+        keyword={query}
+        addBadImage={reRollButton}
+        famousTrueOrFalse={famousQuery}
+      >
         {!famousQuery && (
           <form
             onSubmit={(e) => {
@@ -177,19 +189,12 @@ export default function Api() {
               className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
               type="text"
               placeholder="Enter Famous Figure..."
+
             />
+            <button type="submit" className="btn btn-secondary ml-5">Submit</button>
           </form>
         )}
-      </div>
-
-      <Images
-        famous={famousRes[0]?.url}
-        cartoon={cartres[0]?.url}
-        real={res[0]?.url}
-        keyword={query}
-        addBadImage={reRollButton}
-        famousTrueOrFalse={famousQuery}
-      />
+      </Images>
     </div>
   );
 }

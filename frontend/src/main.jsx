@@ -11,5 +11,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <Nav />
     <Api />
     <Footer />
+
   </React.StrictMode>
 )

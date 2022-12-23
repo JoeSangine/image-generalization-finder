@@ -17,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/JoeSangine/image-association-finder/issues"
   },
-  "homepage": "https://github.com/JoeSangine/image-association-finder#readme"
+  "homepage": "https://github.com/JoeSangine/image-association-finder#readme",
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.1",
+    "@fortawesome/free-regular-svg-icons": "^6.2.1",
+    "@fortawesome/react-fontawesome": "^0.2.0"
+  }
 }
