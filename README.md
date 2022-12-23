@@ -9,6 +9,7 @@ Tech used: HTML, CSS, JavaScript, React, Vite, Node.js, Express
 
 Optimizations
 <ul>
+<li> make it so when logged in it shows username to the left of logout button </li>
 <li>Login and logout error messages</li>
  <li> reduce limit on reroll </li>
 <li>Add a confirm button to the reroll button to make sure good images dont go bye bye</li>
