@@ -9,7 +9,7 @@ export default function Images({ real, cartoon, famous, keyword, addBadImage, fa
             <figure>
                 <img src={real}
                     alt="Real"
-                    className="aspect-[3/2] w-[75vw] md:w-[25vw] mt-4 max-w-[95%] rounded-l drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] " />
+                    className="aspect-[3/2] w-[75vw] md:w-[25vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] " />
             </figure>
 
             <div className="card-body text-center">
