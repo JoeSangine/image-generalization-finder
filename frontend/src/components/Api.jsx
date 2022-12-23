@@ -146,15 +146,10 @@ export default function Api() {
   };
   return (
     <div>
-      <Images
-        famous={famousRes[0]?.url}
-        cartoon={cartres[0]?.url}
-        real={res[0]?.url}
-        keyword={query}
-        addBadImage={reRollButton}
-        famousTrueOrFalse={famousQuery}
-      />
-      <div className="flex justify-center">
+
+      {/* BELOW is the input forms for rendering the images */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <span></span>
         <form
           className="text-center"
           onSubmit={(e) => {
@@ -163,9 +158,10 @@ export default function Api() {
           }}
         >
           <input
-            className="col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 border-dark"
+            className="input text-center input-bordered input-primary col-3 form-control-sm py-1 fs-4 text-capitalize border-[3px] drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark"
             type="text"
-            placeholder="Search Anything..."
+            placeholder="Search for Images Here...
+            "
           />
         </form>
 
@@ -175,16 +171,26 @@ export default function Api() {
               e.preventDefault();
               addFamousImage(e.target.elements[0].value);
             }}
-            className="text-right pl-16 "
+            className="text-center"
           >
             <input
-              className="col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 border-dark "
+              className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
               type="text"
-              placeholder="Please Enter The name of Famous thing you want"
+              placeholder="Enter Famous Figure..."
             />
           </form>
         )}
       </div>
+
+      <Images
+        famous={famousRes[0]?.url}
+        cartoon={cartres[0]?.url}
+        real={res[0]?.url}
+        keyword={query}
+        addBadImage={reRollButton}
+        famousTrueOrFalse={famousQuery}
+      />
     </div>
   );
 }
+
