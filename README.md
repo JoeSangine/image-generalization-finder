@@ -20,11 +20,12 @@ Optimizations
  <li> font changes </li>
  <li> re size buttons </li>
  <li> Ability to undo badimage </li>
+ <li> FIX MOBILE VIEW </li>
  
  <li>user history</li>
  <li>upload custom images</li>
  <li> settings widget to bring back rerolls after custom image uploaded </li>
- <li>  </li>
+ 
 </ul>
 
 
