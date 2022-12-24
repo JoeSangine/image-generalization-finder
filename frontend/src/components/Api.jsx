@@ -2,6 +2,29 @@
 import React, { useState, useEffect } from "react";
 import Images from "./Images";
 
+const fetchFromLaionAPI = async (query, options, page) => {
+  const response = await fetch("https://knn5.laion.ai/knn-service", {
+    "body": JSON.stringify({
+      text: query,
+      modality: "image",
+      num_images: 50 * page,
+      indice_name: "laion5B",
+      use_mclip: false,
+      deduplicate: true,
+      use_safety_model: true,
+      use_violence_detector: true,
+      aesthetic_score: "9",
+      aesthetic_weight: "0.5",
+      ...options
+    }),
+    method: "POST",
+  });
+  const data = await response.json();
+  // Success: data = [{ caption: '', id: 1, similarity: 0.9, url: 'https://...'}]
+  // Failure: data = { message: 'error messsage' }
+  return data.map(obj => obj.url);
+}
+
 const useBadImages = () => {
   const [badImages, setBadImages] = useState([]);
   useEffect(() => {
@@ -53,23 +76,16 @@ const useFamousQuery = (query) => {
 const useFamousApi = () => {
   const [famousRes, famousSetRes] = useState([]);
   const fetchRequestFamous = async (newBadImages, newFamousImages) => {
-    const data = await fetch(
-      `https://api.openverse.engineering/v1/images?q=${newFamousImages?.FamousURL}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: import.meta.env.VITE_OPENVERSE_AUTHKEY,
-        },
-      }
-    );
-    const dataJ = await data.json();
-    const result = dataJ.results.filter((imageobject) => {
-      return !newBadImages.some((badImage) => {
-        return badImage.BadURL === imageobject.url;
+    let usedUrls = [];
+    for (let page = 1; usedUrls.length === 0; page++) {
+      const allUrls = await fetchFromLaionAPI(newFamousImages?.FamousURL, {}, page);
+      usedUrls = allUrls.filter((url) => {
+        return !newBadImages.some((badImage) => {
+          return badImage.BadURL === url;
+        });
       });
-    });
-    // console.log(result)
-    famousSetRes(result);
+    }
+    famousSetRes(usedUrls);
   };
   return [famousRes, fetchRequestFamous];
 };
@@ -77,23 +93,17 @@ const useFamousApi = () => {
 const useCartoonApi = () => {
   const [cartres, cartSetRes] = useState([]);
   const fetchRequestCartoon = async (query, newBadImages) => {
-    const data = await fetch(
-      `https://api.openverse.engineering/v1/images?q=cartoon%20${query}&category=illustration,digitized_artwork`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: import.meta.env.VITE_OPENVERSE_AUTHKEY,
-        },
-      }
-    );
-    const dataJ = await data.json();
-    const result = dataJ.results.filter((imageobject) => {
-      return !newBadImages.some((badImage) => {
-        return badImage.BadURL === imageobject.url;
+    let usedUrls = [];
+    for (let page = 1; usedUrls.length === 0; page++) {
+      const allUrls = await fetchFromLaionAPI('clipart ' + query, {}, page);
+      usedUrls = allUrls.filter((url) => {
+        return !newBadImages.some((badImage) => {
+          return badImage.BadURL === url;
+        });
       });
-    });
-    //console.log(result, newBadImages)
-    cartSetRes(result);
+    }
+    // should be good now +1
+    cartSetRes(usedUrls);
   };
   return [cartres, fetchRequestCartoon];
 };
@@ -101,24 +111,18 @@ const useCartoonApi = () => {
 const useRealApi = () => {
   const [res, setRes] = useState([]);
   const fetchRequestReal = async (query, newBadImages) => {
-    const data = await fetch(
-      `https://api.openverse.engineering/v1/images?q=${query}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: import.meta.env.VITE_OPENVERSE_AUTHKEY,
-        },
-      }
-    );
-    const dataJ = await data.json();
-    const result = dataJ.results.filter((imageobject) => {
-      return !newBadImages.some((badImage) => {
-        return badImage.BadURL === imageobject.url;
+    let usedUrls = [];
+    for (let page = 1; usedUrls.length === 0; page++) {
+      const allUrls = await fetchFromLaionAPI('realistic ' + query, {
+        aesthetic_score: '5'
+      }, page);
+      usedUrls = allUrls.filter((url) => {
+        return !newBadImages.some((badImage) => {
+          return badImage.BadURL === url;
+        });
       });
-    });
-
-    // console.log(result)
-    setRes(result);
+    }
+    setRes(usedUrls);
   };
   return [res, fetchRequestReal];
 };
@@ -130,14 +134,16 @@ export default function Api() {
   const [famousRes, fetchRequestFamous] = useFamousApi();
   const [famousQuery, setFamousQuery] = useFamousQuery(query);
   const [badImages, addBadImage] = useBadImages();
+
   useEffect(() => {
+    if (!query) return;
     fetchRequestReal(query, badImages);
     fetchRequestCartoon(query, badImages);
   }, [query, badImages]);
   useEffect(() => {
-    fetchRequestFamous(badImages, famousQuery);
+    if (famousQuery) fetchRequestFamous(badImages, famousQuery);
   }, [badImages, famousQuery]);
-  query
+
   const reRollButton = (url, type) => {
     addBadImage(url)
   };
@@ -163,16 +169,18 @@ export default function Api() {
             placeholder="Search for Images Here...
             "
           />
-          <button type="submit" className="btn btn-secondary ml-4">Submit</button>
+          <button type="submit" className="btn btn-secondary ml-4">
+            Submit
+          </button>
         </form>
 
 
       </div>
 
       <Images
-        famous={famousRes[0]?.url}
-        cartoon={cartres[0]?.url}
-        real={res[0]?.url}
+        famous={famousRes[0]}
+        cartoon={cartres[0]}
+        real={res[0]}
         keyword={query}
         addBadImage={reRollButton}
         famousTrueOrFalse={famousQuery}

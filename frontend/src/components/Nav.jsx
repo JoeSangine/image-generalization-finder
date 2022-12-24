@@ -37,44 +37,32 @@ export default function Nav() {
                     id="my-modal2"
                     className="modal-toggle" />
 
-                <div className="modal bg-black">
-
-                    <form className="flex" action="/api/login" method="POST">
-                        <div className="mb-3">
-                            <label
-                                htmlFor="exampleInputEmail2"
-                                className="form-label">
-                                Email address
+                <div className="modal bg-opacity-90">
+                    <div className="modal-box">
+                        <form action="/api/login" method="POST">
+                            <label className="input-group input-group-vertical mb-2">
+                                <span className="w-max">Email Address</span>
+                                <input type="email" className="input input-bordered" name="email" />
                             </label>
-                            <input
-                                type="email"
-                                className="form-control mr-8"
-                                id="exampleInputEmail2"
-                                aria-describedby="emailHelp"
-                                name="email"
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-                            <input
-                                type="password"
-                                className="form-control mr-8"
-                                id="exampleInputPassword1"
-                                name="password"
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className="btn btn-primary mr-8">
-                            Submit
-                        </button>
-                    </form>
-                    <div className="modal-action">
-                        <label
-                            htmlFor="my-modal2"
-                            className="btn">
-                            Exit!
-                        </label>
+
+                            <label className="input-group input-group-vertical">
+                                <span className="w-max">Password</span>
+                                <input type="password" className="input input-bordered" name="password" />
+                            </label>
+
+                            <div className="modal-action">
+                                <button
+                                    type="submit"
+                                    className="flex-auto btn btn-primary mr-8">
+                                    Submit
+                                </button>
+                                <label
+                                    htmlFor="my-modal2"
+                                    className="flex-auto btn">
+                                    Exit!
+                                </label>
+                            </div>
+                        </form>
                     </div>
                 </div>
 

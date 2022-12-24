@@ -9,7 +9,9 @@ export default function Images({ real, cartoon, famous, keyword, addBadImage, fa
             <figure>
                 <img src={real}
                     alt="Real"
-                    className="aspect-[3/2] w-[75vw] md:w-[25vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] " />
+                    className="aspect-[3/2] w-[75vw] md:w-[25vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] "
+                    onError={() => addBadImage(real, 'real')}
+                />
             </figure>
 
             <div className="card-body text-center">
@@ -34,9 +36,12 @@ export default function Images({ real, cartoon, famous, keyword, addBadImage, fa
                 {'Cartoon ' + keyword}
             </div>
             <figure >
-                <img src={cartoon}
+                <img
+                    src={cartoon}
                     className="aspect-[3/2] w-[75vw] md:w-[25vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]"
-                    alt="Cartoon" />
+                    alt="Cartoon"
+                    onError={() => addBadImage(cartoon, 'cartoon')}
+                />
             </figure>
             <div className="card-body text-center">
                 <h2>
@@ -59,9 +64,12 @@ export default function Images({ real, cartoon, famous, keyword, addBadImage, fa
 
             </div>
             <figure>
-                <img src={famous}
+                <img
+                    src={famous}
                     alt="Famous"
-                    className="aspect-[3/2] w-[75vw] md:w-[25vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]" />
+                    className="aspect-[3/2] w-[75vw] md:w-[25vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]"
+                    onError={() => addBadImage(famous, 'famous')}
+                />
             </figure>
 
             <div className="card-body text-center">
