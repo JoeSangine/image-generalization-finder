@@ -12,15 +12,15 @@ export default function Nav({ user, setUser }) {
 
         <div className="flex flex-auto" >
             <i className="fa-solid fa-school pt-1 text-5xl ml-10"></i>
-            <h1 className="pl-20 pt-2 font-extrabold text-4xl tracking-widest text-center text-gray-300">
+            <h1 className="pl-2 md:pl-20 pt-2 font-extrabold md:text-4xl tracking-widest text-center text-gray-300">
                 Image Generalization Finder
             </h1>
         </div>
         {/*  LOGIN MODAL BELOW */}
 
         {user !== null ? <>
-            <h3 className="pt-3 pr-10 text-2xl">{user.userName}</h3>
-            <button className="btn mr-10 btn-outline btn-secondary my-1" onClick={() => fetch('/api/logout').then(user => setUser(null))}> LOGOUT</button>
+            <h3 className="hidden md:block pt-3 pr-10 text-2xl">{user.userName}</h3>
+            <button className="btn mr-1 md:mr-10 btn-outline btn-secondary my-1" onClick={() => fetch('/api/logout').then(user => setUser(null))}> LOGOUT</button>
         </>
             : <>
                 <label

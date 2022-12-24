@@ -27,10 +27,12 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                             <h3 className=" pb-5  drop-shadow-[10px_10px_10px_rgba(0,0,0,1)]" >
                                 ONLY CLICK REROLL IF YOU NEVER WANT IMAGE TO APPEAR AGAIN
                             </h3>
+                            {/* reroll button */}
                             <label htmlFor="my-modalReroll1" onClick={() => addBadImage(real, 'real')}
                                 className="btn btn-primary text-white">
                                 REROLL
                             </label>
+                            {/* reroll button */}
                             <label
                                 htmlFor="my-modalReroll1"
                                 className="ml-8 flex-auto btn btn-secondary">
@@ -38,14 +40,16 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                             </label>
                         </div>
                     </div>
-                    <label
-                        htmlFor="my-modalReroll1"
-                        className="btn btn-primary text-white">
-                        Reroll
-                    </label>
-                    <button onClick={() => undoBadImage('real')} disabled={!badImages.some(bad => bad.type === 'real')}
-                        className="ml-5 btn btn-secondary text-white"> Undo
-                    </button>
+                    <div class="flex pl-12 px-5 pr-4 gap-5 text-center max-w-[95%]">
+                        <label
+                            htmlFor="my-modalReroll1"
+                            className="flex-auto btn w-[50%] btn-primary text-white">
+                            Reroll
+                        </label>
+                        <button onClick={() => undoBadImage('real')} disabled={!badImages.some(bad => bad.type === 'real')}
+                            className="flex-auto w-[50%] btn btn-secondary text-white"> Undo
+                        </button>
+                    </div>
                     {/* Modal 1 end */}
 
                 </h2>
@@ -81,10 +85,12 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                             <h3 className="pb-5 drop-shadow-[10px_10px_10px_rgba(0,0,0,1)]" >
                                 ONLY CLICK REROLL IF YOU NEVER WANT IMAGE TO APPEAR AGAIN
                             </h3>
+                            {/* reroll button */}
                             <label htmlFor="my-modalReroll2" onClick={() => addBadImage(cartoon, 'cartoon')}
                                 className="btn btn-primary text-white">
                                 REROLL
                             </label>
+                            {/* reroll button */}
                             <label
                                 htmlFor="my-modalReroll2"
                                 className="ml-8 flex-auto btn btn-secondary">
@@ -92,17 +98,19 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                             </label>
                         </div>
                     </div>
-                    <label
-                        htmlFor="my-modalReroll2"
-                        className="btn btn-primary text-white">
-                        Reroll
-                    </label>
-                    {/* Modal 2 end */}
+                    <div class="flex pl-12 px-5 pr-4 gap-5 text-center max-w-[95%]">
+                        <label
+                            htmlFor="my-modalReroll2"
+                            className="flex-auto btn w-[50%] btn-primary text-white">
+                            Reroll
+                        </label>
+                        {/* Modal 2 end */}
 
 
-                    <button onClick={() => undoBadImage('cartoon')} disabled={!badImages.some(bad => bad.type === 'cartoon')}
-                        className="ml-5 btn btn-secondary text-white"> Undo
-                    </button>
+                        <button onClick={() => undoBadImage('cartoon')} disabled={!badImages.some(bad => bad.type === 'cartoon')}
+                            className="flex-auto w-[50%] btn btn-secondary text-white"> Undo
+                        </button>
+                    </div>
                 </h2>
                 <div className="card-actions justify-end">
                     <div class="tooltip tooltip-left" data-tip="Click Widget Here To Add Custom Input">
@@ -146,11 +154,13 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                                     <h3 className="pb-5 drop-shadow-[10px_10px_10px_rgba(0,0,0,1)]" >
                                         ONLY CLICK REROLL IF YOU NEVER WANT IMAGE TO APPEAR AGAIN
                                     </h3>
+                                    {/* reroll button */}
                                     <label onClick={() => addBadImage(famous, 'famous')}
-                                        className="btn btn-primary text-white"
+                                        className="btn btn-primary  text-white"
                                         htmlFor="my-modalReroll3">
                                         REROLL
                                     </label>
+                                    {/* reroll button */}
                                     <label
                                         htmlFor="my-modalReroll3"
                                         className="ml-8 flex-auto btn btn-secondary">
@@ -158,15 +168,17 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                                     </label>
                                 </div>
                             </div>
-                            <label
-                                htmlFor="my-modalReroll3"
-                                className="btn btn-primary text-white">
-                                Reroll
-                            </label>
-                            {/* modal3 end */}
-                            <button onClick={() => undoBadImage('famous')} disabled={!badImages.some(bad => bad.type === 'famous')}
-                                className="ml-5 btn btn-secondary text-white"> Undo
-                            </button>
+                            <div class="flex pl-12 px-5 pr-4 gap-5 text-center max-w-[95%]">
+                                <label
+                                    htmlFor="my-modalReroll3"
+                                    className="flex-auto btn w-[50%] btn-primary text-white">
+                                    Reroll
+                                </label>
+                                {/* modal3 end */}
+                                <button onClick={() => undoBadImage('famous')} disabled={!badImages.some(bad => bad.type === 'famous')}
+                                    className="flex-auto btn w-[50%] btn-secondary text-white"> Undo
+                                </button>
+                            </div>
                         </h2>
 
                     </>

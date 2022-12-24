@@ -185,10 +185,9 @@ export default function Api({ user }) {
             }}
           >
             <input
-              className="input text-center input-bordered input-primary col-3 form-control-sm py-1 fs-4 text-capitalize border-[3px] drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark"
+              className="input text-center input-bordered input-primary col-3 form-control-sm py-1 fs-4 text-capitalize border-[3px] drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark mt-20"
               type="text"
-              placeholder="Search for Images Here...
-                  "
+              placeholder="Search for Images Here..."
             />
             <button type="submit" className="btn btn-secondary ml-4">
               Submit
@@ -196,6 +195,7 @@ export default function Api({ user }) {
           </form>
           : null
         }
+
       </div>
 
       <Images
