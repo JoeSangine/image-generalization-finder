@@ -3,12 +3,11 @@ const BadImage = require("../models/BadImage");
 module.exports = {
 
   createBadImage: async (req, res) => {
-    console.log(req.body)
     try {
       const newBadImage = await BadImage.create({
         user: req.user?.id,
         BadURL: req.body.BadURL,
-
+        type: req.body.type
       });
       console.log("Image has been archived");
       res.json(newBadImage);
@@ -16,8 +15,18 @@ module.exports = {
       console.log(err);
     }
   },
-
-
+  removeBadImage: async (req, res) => {
+    try {
+      // Find post by id
+      let badImage = await BadImage.findById({ _id: req.params.id });
+      // Delete post from db
+      await BadImage.remove({ _id: req.params.id });
+      console.log("Deleted Image");
+      res.status(200).end();
+    } catch (err) {
+      console.log(err);
+    }
+  }
 };
 
 

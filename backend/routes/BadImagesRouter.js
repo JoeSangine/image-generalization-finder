@@ -8,6 +8,6 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 router.post("/createBadImage", BadImagesController.createBadImage);
 
-// router.delete("/deletePost/:id", BadImagesController.deletePost);
+router.delete("/:id", BadImagesController.removeBadImage);
 
 module.exports = router;

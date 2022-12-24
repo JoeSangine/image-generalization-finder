@@ -1,16 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Api from './components/Api'
-import Footer from './components/Footer'
-import Nav from './components/Nav'
+
+import App from './components/App'
 import './assets/index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-
-    <Nav />
-    <Api />
-    <Footer />
-
+    <App />
   </React.StrictMode>
 )

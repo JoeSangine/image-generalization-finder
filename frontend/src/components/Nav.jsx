@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react"
 
 
-export default function Nav() {
+export default function Nav({ user, setUser }) {
     // use state for logout button to appear when user is logged in
-    const [user, setUser] = useState(undefined);
-    useEffect(() => {
-        fetch('/api/user').then(response => response.json())
-            .then(user => setUser(user))
 
-    }, [])
     if (user === undefined) {
         return <h1>YOUS ALREADY ON FOOL</h1>
     }
@@ -24,7 +19,8 @@ export default function Nav() {
         {/*  LOGIN MODAL BELOW */}
 
         {user !== null ? <>
-            <button className="btn mr-10 btn-outline btn-secondary my-1" onClick={() => fetch('/api/logout').then(user => setUser(null))}>LOGOUT</button>
+            <h3 className="pt-3 pr-10 text-2xl">{user.userName}</h3>
+            <button className="btn mr-10 btn-outline btn-secondary my-1" onClick={() => fetch('/api/logout').then(user => setUser(null))}> LOGOUT</button>
         </>
             : <>
                 <label

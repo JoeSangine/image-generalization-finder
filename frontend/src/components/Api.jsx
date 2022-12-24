@@ -33,20 +33,34 @@ const useBadImages = () => {
       .then((badImages) => setBadImages(badImages));
   }, []);
 
-  const addBadImage = async (url) => {
+  const addBadImage = async (url, type) => {
     const response = await fetch("/api/BadImages/createBadImage", {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify({ BadURL: url }),
+      body: JSON.stringify({ BadURL: url, type }),
     });
     const dataJ = await response.json();
     const newBadImages = [...badImages, dataJ];
     setBadImages(newBadImages);
   };
 
-  return [badImages, addBadImage];
+  const removeBadImage = async (type) => {
+    const lastBadImageOfThisType = badImages.findLastIndex(bad => bad.type === type)
+    if (lastBadImageOfThisType === -1) return;
+    await fetch("/api/BadImages/" + badImages[lastBadImageOfThisType]._id, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+    });
+    const newBadImages = [...badImages];
+    newBadImages.splice(lastBadImageOfThisType, 1);
+    setBadImages(newBadImages);
+  }
+
+  return [badImages, addBadImage, removeBadImage];
 };
 
 const useFamousQuery = (query) => {
@@ -113,7 +127,7 @@ const useRealApi = () => {
   const fetchRequestReal = async (query, newBadImages) => {
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
-      const allUrls = await fetchFromLaionAPI('realistic ' + query, {
+      const allUrls = await fetchFromLaionAPI('real' + query, {
         aesthetic_score: '5'
       }, page);
       usedUrls = allUrls.filter((url) => {
@@ -127,13 +141,13 @@ const useRealApi = () => {
   return [res, fetchRequestReal];
 };
 
-export default function Api() {
+export default function Api({ user }) {
   const [query, setQuery] = useState("");
   const [cartres, fetchRequestCartoon] = useCartoonApi();
   const [res, fetchRequestReal] = useRealApi();
   const [famousRes, fetchRequestFamous] = useFamousApi();
   const [famousQuery, setFamousQuery] = useFamousQuery(query);
-  const [badImages, addBadImage] = useBadImages();
+  const [badImages, addBadImage, removeBadImage] = useBadImages();
 
   useEffect(() => {
     if (!query) return;
@@ -145,36 +159,43 @@ export default function Api() {
   }, [badImages, famousQuery]);
 
   const reRollButton = (url, type) => {
-    addBadImage(url)
+    addBadImage(url, type)
   };
-  const addFamousImage = async (keyword) => {
+  const addFamousImage = (keyword) => {
     setFamousQuery(keyword)
   };
+
+  const undoBadImage = type => {
+    removeBadImage(type);
+  }
+
   return (
     <div>
 
       {/* BELOW is the input forms for rendering the images */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <span></span>
-        <form
-          className="text-center"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setQuery(e.target.elements[0].value);
-          }}
-        >
-          <input
-            className="input text-center input-bordered input-primary col-3 form-control-sm py-1 fs-4 text-capitalize border-[3px] drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark"
-            type="text"
-            placeholder="Search for Images Here...
-            "
-          />
-          <button type="submit" className="btn btn-secondary ml-4">
-            Submit
-          </button>
-        </form>
-
-
+        {user
+          ?
+          <form
+            className="text-center"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setQuery(e.target.elements[0].value);
+            }}
+          >
+            <input
+              className="input text-center input-bordered input-primary col-3 form-control-sm py-1 fs-4 text-capitalize border-[3px] drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark"
+              type="text"
+              placeholder="Search for Images Here...
+                  "
+            />
+            <button type="submit" className="btn btn-secondary ml-4">
+              Submit
+            </button>
+          </form>
+          : null
+        }
       </div>
 
       <Images
@@ -183,9 +204,11 @@ export default function Api() {
         real={res[0]}
         keyword={query}
         addBadImage={reRollButton}
+        undoBadImage={undoBadImage}
         famousTrueOrFalse={famousQuery}
+        badImages={badImages}
       >
-        {!famousQuery && (
+        {!famousQuery && user && (
           <form
             onSubmit={(e) => {
               e.preventDefault();
