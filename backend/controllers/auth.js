@@ -20,11 +20,9 @@ exports.postLogin = (req, res, next) => {
     validationErrors.push({ msg: "Password cannot be blank." });
 
   if (validationErrors.length) {
-    req.flash("errors", validationErrors);
-    
-    return res.redirect("/");
+    return res.json({ message: validationErrors.map(obj => obj.msg).join('\n') })
   }
-  
+
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
   });
@@ -34,15 +32,13 @@ exports.postLogin = (req, res, next) => {
       return next(err);
     }
     if (!user) {
-      req.flash("errors", info);
-      return res.redirect("/");
+      return res.json({ user, message: info.message })
     }
     req.logIn(user, (err) => {
       if (err) {
         return next(err);
       }
-      req.flash("success", { msg: "Success! You are logged in." });
-      res.redirect(req.session.returnTo || "/");
+      res.json({ user, message: 'Success! You are logged in.'})
     });
   })(req, res, next);
 };
@@ -50,13 +46,8 @@ exports.postLogin = (req, res, next) => {
 exports.logout = (req, res) => {
   req.logout(() => {
     console.log('User has logged out.')
+    res.json({ user: null })
   })
-  req.session.destroy((err) => {
-    if (err)
-      console.log("Error : Failed to destroy the session during logout.", err);
-    req.user = null;
-    res.redirect("/");
-  });
 };
 
 exports.getSignup = (req, res) => {
@@ -80,9 +71,7 @@ exports.postSignup = (req, res, next) => {
     validationErrors.push({ msg: "Passwords do not match" });
 
   if (validationErrors.length) {
-    
-    req.flash("errors", validationErrors);
-    return res.redirect("/");
+    return res.json({ message: validationErrors.map(obj => obj.msg).join('\n') })
   }
   req.body.email = validator.normalizeEmail(req.body.email, {
     gmail_remove_dots: false,
@@ -101,11 +90,7 @@ exports.postSignup = (req, res, next) => {
         return next(err);
       }
       if (existingUser) {
-        req.flash("errors", {
-          msg: "Account with that email address or username already exists.",
-        });
-        
-        return res.redirect("/");
+        return res.json({ user, message: "Account with that email address or username already exists." })
       }
       user.save((err) => {
         if (err) {
@@ -116,7 +101,7 @@ exports.postSignup = (req, res, next) => {
           if (err) {
             return next(err);
           }
-          res.redirect("/");
+          res.json({ user })
         });
       });
     }

@@ -248,7 +248,7 @@ export default function Api({ user }) {
             }}
           >
             <input
-              className="input text-center input-bordered input-accent col-3 form-control-sm py-1 fs-4 text-capitalize drop-shadow-[0_0_25px_rgba(0,0,0,.4)] border-2 border-[#ffffff50] mt-2"
+              className="input text-center input-bordered input-accent col-3 form-control-sm py-1 fs-4 text-capitalize ml-24 drop-shadow-[0_0_25px_rgba(0,0,0,.4)] border-2 border-[#ffffff50] mt-2"
               type="text"
               placeholder="Search for Images Here..."
             />
