@@ -63,36 +63,53 @@ const useBadImages = () => {
   return [badImages, addBadImage, removeBadImage];
 };
 
-const useFamousQuery = (query) => {
-  const [famousQuery, setFamousQueryValue] = useState();
+const useCustomQueries = (originalQuery) => {
+  const [customQueries, setCustomQueriesValues] = useState({});
 
   useEffect(() => {
-    if (!query) return;
-    fetch(`/api/famous-image/${query}`)
+    if (!originalQuery) return;
+    fetch(`/api/custom-query/${originalQuery}`)
       .then((response) => response.json())
-      .then((famousQuery) => setFamousQueryValue(famousQuery));
-  }, [query]);
+      .then((customQueries) => setCustomQueriesValues(customQueries));
+  }, [originalQuery]);
 
-  const setFamousQuery = async (keyword) => {
-    const response = await fetch("/api/famous-image/createFamousImage", {
+  const setCustomQuery = async (type, convertedQuery) => {
+    const response = await fetch("/api/custom-query/" + originalQuery, {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify({ FamousURL: keyword, query: query }),
+      body: JSON.stringify({ type, convertedQuery }),
     });
     const dataJ = await response.json();
-    setFamousQueryValue(dataJ);
+    const newCustomQueries = { ...customQueries };
+    newCustomQueries[type] = dataJ;
+    setCustomQueriesValues(newCustomQueries);
   };
-  return [famousQuery, setFamousQuery];
+
+  const deleteCustomQuery = async (type) => {
+    const customQueryID = customQueries[type]._id;
+    await fetch("/api/custom-query/" + customQueryID, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+    });
+    const newCustomQueries = { ...customQueries };
+    delete newCustomQueries[type];
+    setCustomQueriesValues(newCustomQueries);
+  };
+
+  return [customQueries, setCustomQuery, deleteCustomQuery];
 };
 
 const useFamousApi = () => {
   const [famousRes, famousSetRes] = useState([]);
-  const fetchRequestFamous = async (newBadImages, newFamousImages) => {
+  const fetchRequestFamous = async (query, newBadImages) => {
+    console.log('no go here', { query });
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
-      const allUrls = await fetchFromLaionAPI(newFamousImages?.FamousURL, {}, page);
+      const allUrls = await fetchFromLaionAPI(query, {}, page);
       usedUrls = allUrls.filter((url) => {
         return !newBadImages.some((badImage) => {
           return badImage.BadURL === url;
@@ -109,7 +126,7 @@ const useCartoonApi = () => {
   const fetchRequestCartoon = async (query, newBadImages) => {
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
-      const allUrls = await fetchFromLaionAPI('clipart ' + query, {}, page);
+      const allUrls = await fetchFromLaionAPI(query, {}, page);
       usedUrls = allUrls.filter((url) => {
         return !newBadImages.some((badImage) => {
           return badImage.BadURL === url;
@@ -127,7 +144,7 @@ const useRealApi = () => {
   const fetchRequestReal = async (query, newBadImages) => {
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
-      const allUrls = await fetchFromLaionAPI('real' + query, {
+      const allUrls = await fetchFromLaionAPI(query, {
         aesthetic_score: '5'
       }, page);
       usedUrls = allUrls.filter((url) => {
@@ -146,23 +163,26 @@ export default function Api({ user }) {
   const [cartres, fetchRequestCartoon] = useCartoonApi();
   const [res, fetchRequestReal] = useRealApi();
   const [famousRes, fetchRequestFamous] = useFamousApi();
-  const [famousQuery, setFamousQuery] = useFamousQuery(query);
+  const [customQueries, setCustomQuery, deleteCustomQuery] = useCustomQueries(query);
   const [badImages, addBadImage, removeBadImage] = useBadImages();
 
   useEffect(() => {
-    if (!query) return;
-    fetchRequestReal(query, badImages);
-    fetchRequestCartoon(query, badImages);
-  }, [query, badImages]);
+    const realQuery = customQueries.real?.convertedQuery || (query ? 'real ' + query : '');
+    if (realQuery) fetchRequestReal(realQuery, badImages);
+    const cartoonQuery = customQueries.cartoon?.convertedQuery || (query ? 'clipart ' + query : '');
+    if (cartoonQuery) fetchRequestCartoon(cartoonQuery, badImages);
+  }, [query, badImages, customQueries]);
   useEffect(() => {
-    if (famousQuery) fetchRequestFamous(badImages, famousQuery);
-  }, [badImages, famousQuery]);
+    if (customQueries.famous) fetchRequestFamous(customQueries.famous.convertedQuery, badImages);
+    // TODO - clear when not famous or something?
+  }, [badImages, customQueries.famous?.convertedQuery]);
 
   const reRollButton = (url, type) => {
     addBadImage(url, type)
   };
-  const addFamousImage = (keyword) => {
-    setFamousQuery(keyword)
+  const submitCustomQuery = (type, convertedQuery) => {
+    if (convertedQuery) return setCustomQuery(type, convertedQuery);
+    else return deleteCustomQuery(type);
   };
 
   const undoBadImage = type => {
@@ -205,27 +225,11 @@ export default function Api({ user }) {
         keyword={query}
         addBadImage={reRollButton}
         undoBadImage={undoBadImage}
-        famousTrueOrFalse={famousQuery}
         badImages={badImages}
-      >
-        {!famousQuery && user && (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              addFamousImage(e.target.elements[0].value);
-            }}
-            className="text-center"
-          >
-            <input
-              className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
-              type="text"
-              placeholder="Enter Famous Figure..."
-
-            />
-            <button type="submit" className="btn btn-secondary ml-5">Submit</button>
-          </form>
-        )}
-      </Images>
+        submitCustomQuery={submitCustomQuery}
+        customQueries={customQueries}
+        user={user}
+      />
     </div>
   );
 }

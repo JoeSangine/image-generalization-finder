@@ -10,7 +10,7 @@ const logger = require("morgan");
 const connectDB = require("./config/database");
 const mainRoutes = require("./routes/main");
 const BadImagesRouter = require("./routes/BadImagesRouter");
-const FamousImageRouter = require("./routes/FamousImageRouter");
+const CustomQueryRouter = require("./routes/CustomQueryRouter");
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
 
@@ -56,7 +56,7 @@ app.use(flash());
 //Setup Routes For Which The Server Is Listening
 app.use("/api/", mainRoutes);
 app.use("/api/BadImages", BadImagesRouter);
-app.use("/api/famous-image", FamousImageRouter);
+app.use("/api/custom-query", CustomQueryRouter);
 
 
 //Server Running

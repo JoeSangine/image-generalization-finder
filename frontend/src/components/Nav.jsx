@@ -33,7 +33,7 @@ export default function Nav({ user, setUser }) {
                     id="my-modal2"
                     className="modal-toggle" />
 
-                <div className="modal bg-opacity-90">
+                <label htmlFor="my-modal2" className="modal bg-opacity-90 cursor-pointer">
                     <div className="modal-box">
                         <form action="/api/login" method="POST">
                             <label className="input-group input-group-vertical mb-2">
@@ -60,99 +60,57 @@ export default function Nav({ user, setUser }) {
                             </div>
                         </form>
                     </div>
-                </div>
+                </label>
 
                 {/* Signup modal below */}
 
-
-                <div >
-                    <label
-                        htmlFor="my-modal"
-                        className="btn btn-outline btn-secondary mr-10 my-1">
-                        Signup
-                    </label>
-
-                    <input
-                        type="checkbox"
-                        id="my-modal"
-                        className="modal-toggle" />
-
-                    <div className="modal bg-black">
-
-                        <form className="flex" action="/api/signup" method="POST">
-                            <div className="mb-3">
-                                <label
-                                    htmlFor="userName"
-                                    className="form-label">
-                                    User Name
-                                </label>
-
-                                <input
-                                    type="text"
-                                    className="form-control mr-8"
-                                    id="userName"
-                                    name="userName" />
-                            </div>
-                            <div className="mb-3">
-                                <label
-                                    htmlFor="exampleInputEmail1"
-                                    className="form-label">
-                                    Email address
-                                </label>
-                                <input
-                                    type="email"
-                                    className="form-control mr-8"
-                                    id="exampleInputEmail1"
-                                    aria-describedby="emailHelp"
-                                    name="email" />
-                                <div
-                                    id="emailHelp"
-                                    className="form-text">
-
-                                </div>
-                            </div>
-                            <div className="mb-3">
-                                <label
-                                    htmlFor="password"
-                                    className="form-label">
-                                    Password
-                                </label>
-
-                                <input
-                                    type="password"
-                                    className="form-control mr-8"
-                                    id="password"
-                                    name="password" />
-
-                            </div>
-                            <div className="mb-3">
-                                <label
-                                    htmlFor="confirmPassword"
-                                    className="form-label">
-                                    Confirm Password
-                                </label>
-
-                                <input
-                                    type="password"
-                                    className="form-control mr-8"
-                                    id="confirmPassword"
-                                    name="confirmPassword" />
-                            </div>
-                            <button
-                                type="submit"
-                                className="btn btn-primary">
-                                Submit
-                            </button>
-                        </form>
-                        <div className="modal-action">
-                            <label
-                                htmlFor="my-modal"
-                                className="btn">
-                                Exit!
+                <label
+                    htmlFor="my-modal"
+                    className="btn btn-outline btn-secondary mr-10 my-1">
+                    Signup
+                </label>
+                <input
+                    type="checkbox"
+                    id="my-modal"
+                    className="modal-toggle" />
+                <label htmlFor="my-modal" className="modal bg-opacity-90 cursor-pointer">
+                    <div className="modal-box">
+                        <form action="/api/signup" method="POST">
+                            <label className="input-group input-group-vertical mb-2">
+                                <span className="w-max">User Name</span>
+                                <input className="input input-bordered" name="userName" />
                             </label>
-                        </div>
+                            <label className="input-group input-group-vertical mb-2">
+                                <span className="w-max">Email Address</span>
+                                <input type="email" className="input input-bordered" name="email" />
+                            </label>
+
+                            <label className="input-group input-group-vertical">
+                                <span className="w-max">Password</span>
+                                <input type="password" className="input input-bordered" name="password" />
+                            </label>
+
+
+                            <label className="input-group input-group-vertical">
+                                <span className="w-max">Confirm Password</span>
+                                <input type="password" className="input input-bordered" name="confirmPassword" />
+                            </label>
+
+                            <div className="modal-action">
+                                <button
+                                    type="submit"
+                                    className="flex-auto btn btn-primary mr-8">
+                                    Submit
+                                </button>
+                                <label
+                                    htmlFor="my-modal"
+                                    className="flex-auto btn">
+                                    Exit!
+                                </label>
+                            </div>
+                        </form>
                     </div>
-                </div>
+                </label>
             </>}
 
     </nav>
