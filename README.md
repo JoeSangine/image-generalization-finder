@@ -13,6 +13,7 @@ Optimizations
  <li>user history</li>
  <li>upload custom images</li>
  <li> settings widget to bring back rerolls after custom image uploaded aka history</li>
+ <li> Blacklist image permanent button </li>
  
  <li> REFACTOR TO MAKE CODE MORE EFFICENT AND CLEAN CONSTANTLY </li>
  
