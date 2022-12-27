@@ -12,7 +12,7 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
             </div>
 
             <figure>
-                {real ? <img src={real}
+                {real && keyword ? <img src={real}
                     alt="Real"
                     className="aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] "
                     xmlns="http://placekitten.com/200/300"
@@ -108,7 +108,7 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                 {'Cartoon ' + (keyword || 'Owl')}
             </div>
             <figure >
-                {cartoon ? <img
+                {cartoon && keyword ? <img
                     src={cartoon}
                     className="aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]"
                     alt="Cartoon"
@@ -205,7 +205,7 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
 
             </div>
             <figure>
-                {customQueries.famous && famous ? <img
+                {customQueries.famous && famous && keyword ? <img
                     src={famous}
                     alt="Famous"
                     className="aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]"
