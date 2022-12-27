@@ -1,6 +1,6 @@
 Image Generalization Finder
 This app is built to help children with Autism in their development and education. My wife is a behavioral technician for children with Autism and they often use an excersize that requires her and many of her coworkers to need to manually get images to use. Generalization is what this is going to help with. This app will display 3 images based off of a single input. For example, if you type in the word dog you will recieve a Real dog, Generic Cartoon dog, and a Famous dog. All three containers will always be tied to the words Real, Cartoon, and Famous. This will save behavioral techs and anyone who is helping children learn generalization a ton of excess time and effort that could be used helping the children!
-![image]([https://cdn.discordapp.com/attachments/735946723016442008/1055775070938726400/image.png](https://cdn.discordapp.com/attachments/735946770210619555/1057177196554362910/image.png))
+![image](https://cdn.discordapp.com/attachments/735946770210619555/1057177196554362910/image.png)
 
 Link to project: (https://imagegeneralizationfinder.cyclic.app/)
 
