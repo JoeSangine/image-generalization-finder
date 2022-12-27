@@ -8,11 +8,11 @@ export default function Nav({ user, setUser }) {
         return <h1>YOUS ALREADY ON FOOL</h1>
     }
     // Text and eventually logo below
-    return <nav className="drop-shadow-[10px_10px_10px_rgba(0, 0, 0, 1)] mb-6 flex justify-end py-1 bg-[#191D24] text-white">
+    return <nav className="drop-shadow-[10px_10px_10px_rgba(0, 0, 0, 1)] mb-6 flex justify-end py-1 bg-[#191d24e3] text-[#ffffffe6]">
 
         <div className="flex flex-auto" >
             <i className="fa-solid fa-school pt-1 text-5xl ml-10"></i>
-            <h1 className="pl-2 md:pl-20 pt-2 font-extrabold md:text-4xl tracking-widest text-center text-gray-300">
+            <h1 className="pl-2 md:pl-20 pt-2 font-extrabold md:text-4xl tracking-widest text-center text-[#ffffffd8]">
                 Image Generalization Finder
             </h1>
         </div>

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import Images from "./Images";
 
 const fetchFromLaionAPI = async (query, options, page) => {
@@ -106,7 +106,7 @@ const useCustomQueries = (originalQuery) => {
 const useFamousApi = () => {
   const [famousRes, famousSetRes] = useState([]);
   const fetchRequestFamous = async (query, newBadImages) => {
-    console.log('no go here', { query });
+    famousSetRes([]);
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
       const allUrls = await fetchFromLaionAPI(query, {}, page);
@@ -124,6 +124,7 @@ const useFamousApi = () => {
 const useCartoonApi = () => {
   const [cartres, cartSetRes] = useState([]);
   const fetchRequestCartoon = async (query, newBadImages) => {
+    cartSetRes([]);
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
       const allUrls = await fetchFromLaionAPI(query, {}, page);
@@ -142,6 +143,7 @@ const useCartoonApi = () => {
 const useRealApi = () => {
   const [res, setRes] = useState([]);
   const fetchRequestReal = async (query, newBadImages) => {
+    setRes([]);
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
       const allUrls = await fetchFromLaionAPI(query, {
@@ -158,22 +160,63 @@ const useRealApi = () => {
   return [res, fetchRequestReal];
 };
 
+function usePrevious(initial, value) {
+  const ref = useRef(initial);
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  return ref.current;
+}
+
 export default function Api({ user }) {
   const [query, setQuery] = useState("");
+  const prevQuery = usePrevious('', query);
   const [cartres, fetchRequestCartoon] = useCartoonApi();
   const [res, fetchRequestReal] = useRealApi();
   const [famousRes, fetchRequestFamous] = useFamousApi();
   const [customQueries, setCustomQuery, deleteCustomQuery] = useCustomQueries(query);
+  const prevCustomQueries = usePrevious({}, customQueries);
   const [badImages, addBadImage, removeBadImage] = useBadImages();
+  const prevBadImages = usePrevious([], badImages);
+
+  const [showRerollDialog, setShowRerollDialogValue] = useState(localStorage.getItem('showRerollDialog') !== 'false');
+
+  const setShowRerollDialog = (value) => {
+    localStorage.setItem('showRerollDialog', value);
+    setShowRerollDialogValue(value);
+  };
 
   useEffect(() => {
+    const realBadImages = badImages.filter(bad => bad.type === 'real');
+    const oldRealBadImages = prevBadImages.filter(bad => bad.type === 'real');
+    const badImagesChanged = realBadImages.length !== oldRealBadImages.length;
+    const customQueriesChanged = customQueries.real?.convertedQuery !== prevCustomQueries.real?.convertedQuery;
+    const queryChanged = query !== prevQuery;
+    if (!badImagesChanged && !customQueriesChanged && !queryChanged) return;
+
     const realQuery = customQueries.real?.convertedQuery || (query ? 'real ' + query : '');
-    if (realQuery) fetchRequestReal(realQuery, badImages);
-    const cartoonQuery = customQueries.cartoon?.convertedQuery || (query ? 'clipart ' + query : '');
-    if (cartoonQuery) fetchRequestCartoon(cartoonQuery, badImages);
+    if (realQuery) fetchRequestReal(realQuery, realBadImages);
   }, [query, badImages, customQueries]);
   useEffect(() => {
-    if (customQueries.famous) fetchRequestFamous(customQueries.famous.convertedQuery, badImages);
+    const cartoonBadImages = badImages.filter(bad => bad.type === 'cartoon');
+    const oldCartoonBadImages = prevBadImages.filter(bad => bad.type === 'cartoon');
+    const badImagesChanged = cartoonBadImages.length !== oldCartoonBadImages.length;
+    const customQueriesChanged = customQueries.cartoon?.convertedQuery !== prevCustomQueries.cartoon?.convertedQuery;
+    const queryChanged = query !== prevQuery;
+    if (!badImagesChanged && !customQueriesChanged && !queryChanged) return;
+
+    const cartoonQuery = customQueries.cartoon?.convertedQuery || (query ? 'clipart ' + query : '');
+    if (cartoonQuery) fetchRequestCartoon(cartoonQuery, cartoonBadImages);
+  }, [query, badImages, customQueries])
+  useEffect(() => {
+    const famousBadImages = badImages.filter(bad => bad.type === 'famous');
+    const oldFamousBadImages = prevBadImages.filter(bad => bad.type === 'famous');
+    const badImagesChanged = famousBadImages.length !== oldFamousBadImages.length;
+    const customQueriesChanged = customQueries.famous?.convertedQuery !== prevCustomQueries.famous?.convertedQuery;
+    const queryChanged = query !== prevQuery;
+    if (!badImagesChanged && !customQueriesChanged && !queryChanged) return;
+
+    if (customQueries.famous) fetchRequestFamous(customQueries.famous.convertedQuery, famousBadImages);
     // TODO - clear when not famous or something?
   }, [badImages, customQueries.famous?.convertedQuery]);
 
@@ -205,7 +248,7 @@ export default function Api({ user }) {
             }}
           >
             <input
-              className="input text-center input-bordered input-primary col-3 form-control-sm py-1 fs-4 text-capitalize border-[3px] drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark mt-20"
+              className="input text-center input-bordered input-accent col-3 form-control-sm py-1 fs-4 text-capitalize drop-shadow-[0_0_25px_rgba(0,0,0,.4)] border-2 border-[#ffffff50] mt-2"
               type="text"
               placeholder="Search for Images Here..."
             />
@@ -229,6 +272,8 @@ export default function Api({ user }) {
         submitCustomQuery={submitCustomQuery}
         customQueries={customQueries}
         user={user}
+        showRerollDialog={showRerollDialog}
+        setShowRerollDialog={setShowRerollDialog}
       />
     </div>
   );

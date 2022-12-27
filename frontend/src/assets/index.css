@@ -2,12 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
-    html {
+    html, body{
         font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    }
-
-    html, body {
-        background-color: #3e4657 !important;
+        --d: 3500px;
+        --angle: 170deg;
+        --sinus: 0.17365;
         height: 100%;
+        background: #AD1F87;
+        /*background: linear-gradient(172deg, rgba(180, 80, 99, 1) 0%, rgba(25, 29, 36, 1) 15%, rgba5014B8 27%, rgba(183, 93, 36, 1) 50%, rgba5014B8 74%, rgba(25, 29, 36, 1) 84%, rgba(180, 80, 99, 1) 95%);*/
+        background: repeating-linear-gradient(var(--angle),
+                #AD1F87,
+                #606d88,
+                #5014b8,
+                #b6acc8a2,
+                #6b1cf3,
+                #667697,
+                #AD1F87 var(--d));
+        background-size: calc(var(--d)/var(--sinus)) 100%;
+        animation: gradient 42s linear infinite reverse;
     }
+        @keyframes gradient {
+            0% {
+                background-position: calc(var(--d)/var(--sinus)) 0;
+            }
+        }
+/*pink #AD1F87
+blue #5014B8
+card #2A303C*/
+
 }
