@@ -15,6 +15,8 @@ Optimizations
  <li> settings widget to bring back rerolls after custom image uploaded aka history</li>
  <li> Blacklist image permanent button </li>
  <li>animation nation</li>
+ <li> ADD GIF TO THIS README and improve description and readme in general </li>
+ <li> fix weird data issues </li>
  <li> REFACTOR TO MAKE CODE MORE EFFICENT AND CLEAN CONSTANTLY </li>
  
 </ul>
