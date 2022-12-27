@@ -9,15 +9,10 @@ Tech used: HTML, CSS, JavaScript, React, Vite, Node.js, Express
 
 Optimizations
 <ul>
-
-<li>Login and logout error messages</li>
-
- <li> never appear again button for modal </li>
- <li> backend doesnt respond nav goes bye bye fix that </li>
+ <li> backend doesnt respond nav goes bye bye fix that  (can do last doesnt affect user just devs)</li>
  <li>user history</li>
  <li>upload custom images</li>
  <li> settings widget to bring back rerolls after custom image uploaded aka history</li>
- <li> How it works modal button in nav </li>
  
  <li> REFACTOR TO MAKE CODE MORE EFFICENT AND CLEAN CONSTANTLY </li>
  
