@@ -1,6 +1,20 @@
 import { useState } from 'react'
 
-export default function Images({ real, cartoon, famous, keyword, badImages, addBadImage, undoBadImage, submitCustomQuery, customQueries, user, showRerollDialog, setShowRerollDialog }) {
+
+const INITIAL_OVERRIDES = {
+    'owl': {
+        'real': 'https://pazlspb.ru/sites/default/files/styles/catmed/public/uploads/1222/pazl_super_3d_nochnoy_strazh_500_elementov.jpg',
+        'cartoon': 'https://i.pinimg.com/736x/8e/c7/e9/8ec7e96bf97de75431d67a79a012ca24.jpg',
+        'famous': 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f918f41c-9b07-4abc-b8d0-c27a1602ae90/daoln0v-369faaed-6057-4369-8599-5571b40091b9.jpg/v1/fill/w_1024,h_719,q_75,strp/harry_potter_by_opheliac98-daoln0v.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwic3ViIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl0sIm9iaiI6W1t7InBhdGgiOiIvZi9mOTE4ZjQxYy05YjA3LTRhYmMtYjhkMC1jMjdhMTYwMmFlOTAvZGFvbG4wdi0zNjlmYWFlZC02MDU3LTQzNjktODU5OS01NTcxYjQwMDkxYjkuanBnIiwid2lkdGgiOiI8PTEwMjQiLCJoZWlnaHQiOiI8PTcxOSJ9XV19.LjpKhmrE0QmrFxdrlwyGsp0N9xj4QR9Su8PPNlkAXRM',
+    },
+    '': {
+        'real': 'https://pazlspb.ru/sites/default/files/styles/catmed/public/uploads/1222/pazl_super_3d_nochnoy_strazh_500_elementov.jpg',
+        'cartoon': 'https://i.pinimg.com/736x/8e/c7/e9/8ec7e96bf97de75431d67a79a012ca24.jpg',
+        'famous': 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f918f41c-9b07-4abc-b8d0-c27a1602ae90/daoln0v-369faaed-6057-4369-8599-5571b40091b9.jpg/v1/fill/w_1024,h_719,q_75,strp/harry_potter_by_opheliac98-daoln0v.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwic3ViIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl0sIm9iaiI6W1t7InBhdGgiOiIvZi9mOTE4ZjQxYy05YjA3LTRhYmMtYjhkMC1jMjdhMTYwMmFlOTAvZGFvbG4wdi0zNjlmYWFlZC02MDU3LTQzNjktODU5OS01NTcxYjQwMDkxYjkuanBnIiwid2lkdGgiOiI8PTEwMjQiLCJoZWlnaHQiOiI8PTcxOSJ9XV19.LjpKhmrE0QmrFxdrlwyGsp0N9xj4QR9Su8PPNlkAXRM',
+    },
+}
+
+export default function Images({ real, cartoon, famous, keyword = 'owl', badImages, addBadImage, undoBadImage, submitCustomQuery, customQueries, user, showRerollDialog, setShowRerollDialog }) {
     const [editingRealQuery, setEditingRealQuery] = useState(false)
     const [editingCartoonQuery, setEditingCartoonQuery] = useState(false)
     const [editingFamousQuery, setEditingFamousQuery] = useState(false)
@@ -12,16 +26,14 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
             </div>
 
             <figure>
-                {real && keyword ? <img src={real}
+                {INITIAL_OVERRIDES[keyword]?.real || ((real || customQueries.real?.image?.url) && keyword) ? <img
+                    src={customQueries.real?.image?.url || INITIAL_OVERRIDES[keyword]?.real || real}
                     alt="Real"
                     className="aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] "
                     xmlns="http://placekitten.com/200/300"
 
 
                     onError={() => addBadImage(real, 'real')}
-                /> : !keyword ? <img src="https://pazlspb.ru/sites/default/files/styles/catmed/public/uploads/1222/pazl_super_3d_nochnoy_strazh_500_elementov.jpg"
-                    alt="Real"
-                    className="aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] "
                 /> : <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>}
             </figure>
 
@@ -30,16 +42,28 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
-                            submitCustomQuery('real', e.target.elements[0].value).then(() => setEditingRealQuery(false));
+                            const form = e.currentTarget;
+                            const convertedQuery = form.elements.convertedQuery.value;
+                            const imageURL = form.elements.imageURL.value;
+                            const image = form.elements.image.files[0];
+                            return submitCustomQuery('real', { convertedQuery, imageURL, image })
+                                .then(() => setEditingRealQuery(false));
                         }}
                         className="text-center"
                     >
                         <input
                             className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
                             type="text"
+                            name="convertedQuery"
                             placeholder="Enter Real Figure..."
-                        //defaultValue={customQueries.real?.convertedQuery || ''}
                         />
+                        <input
+                            className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                            type="text"
+                            name="imageURL"
+                            placeholder="Enter Image URL..."
+                        />
+                        <input type="file" name="image" className="file-input file-input-bordered w-full max-w-xs" />
 
                         <button type="submit" className="btn btn-secondary ml-5">Submit</button>
                     </form>
@@ -108,14 +132,11 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                 {'Cartoon ' + (keyword || 'Owl')}
             </div>
             <figure >
-                {cartoon && keyword ? <img
-                    src={cartoon}
+                {INITIAL_OVERRIDES[keyword]?.cartoon || ((cartoon || customQueries.cartoon?.image?.url) && keyword) ? <img
+                    src={customQueries.cartoon?.image?.url || INITIAL_OVERRIDES[keyword]?.cartoon || cartoon}
                     className="aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]"
                     alt="Cartoon"
                     onError={() => addBadImage(cartoon, 'cartoon')}
-                /> : !keyword ? <img src="https://i.pinimg.com/736x/8e/c7/e9/8ec7e96bf97de75431d67a79a012ca24.jpg"
-                    alt="Cartoon"
-                    className="aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] "
                 /> : <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>}
             </figure>
             <div className="card-body text-center">
@@ -123,16 +144,28 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
-                            submitCustomQuery('cartoon', e.target.elements[0].value).then(() => setEditingCartoonQuery(false));
+                            const form = e.currentTarget;
+                            const convertedQuery = form.elements.convertedQuery.value;
+                            const imageURL = form.elements.imageURL.value;
+                            const image = form.elements.image.files[0];
+                            return submitCustomQuery('cartoon', { convertedQuery, imageURL, image })
+                                .then(() => setEditingCartoonQuery(false));
                         }}
                         className="text-center"
                     >
                         <input
                             className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
                             type="text"
+                            name="convertedQuery"
                             placeholder="Enter Cartoon Figure..."
-                        //defaultValue={customQueries.cartoon?.convertedQuery || ''}
                         />
+                        <input
+                            className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                            type="text"
+                            name="imageURL"
+                            placeholder="Enter Image URL..."
+                        />
+                        <input type="file" name="image" className="file-input file-input-bordered w-full max-w-xs" />
 
                         <button type="submit" className="btn btn-secondary ml-5">Submit</button>
                     </form>
@@ -154,7 +187,7 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                                     <input type="checkbox" checked={showRerollDialog} className="checkbox" onChange={(e) => setShowRerollDialog(e.currentTarget.checked)} />
                                 </label>
                                 {/* reroll button */}
-                                <label htmlFor="my-modalReroll1" onClick={() => addBadImage(real, 'real')}
+                                <label htmlFor="my-modalReroll1" onClick={() => addBadImage(cartoon, 'cartoon')}
                                     className="btn btn-primary text-white">
                                     REROLL
                                 </label>
@@ -205,14 +238,11 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
 
             </div>
             <figure>
-                {customQueries.famous && famous && keyword ? <img
-                    src={famous}
+                {INITIAL_OVERRIDES[keyword]?.famous || (((customQueries.famous && famous) || customQueries.famous?.image?.url) && keyword) ? <img
+                    src={customQueries.famous?.image?.url || INITIAL_OVERRIDES[keyword]?.famous || famous}
                     alt="Famous"
                     className="aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]"
                     onError={() => addBadImage(famous, 'famous')}
-                /> : !keyword ? <img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f918f41c-9b07-4abc-b8d0-c27a1602ae90/daoln0v-369faaed-6057-4369-8599-5571b40091b9.jpg/v1/fill/w_1024,h_719,q_75,strp/harry_potter_by_opheliac98-daoln0v.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwic3ViIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl0sIm9iaiI6W1t7InBhdGgiOiIvZi9mOTE4ZjQxYy05YjA3LTRhYmMtYjhkMC1jMjdhMTYwMmFlOTAvZGFvbG4wdi0zNjlmYWFlZC02MDU3LTQzNjktODU5OS01NTcxYjQwMDkxYjkuanBnIiwid2lkdGgiOiI8PTEwMjQiLCJoZWlnaHQiOiI8PTcxOSJ9XV19.LjpKhmrE0QmrFxdrlwyGsp0N9xj4QR9Su8PPNlkAXRM"
-                    alt="Famous"
-                    className="aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] "
                 /> : <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>}
             </figure>
 
@@ -221,16 +251,28 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
-                            submitCustomQuery('famous', e.target.elements[0].value).then(() => setEditingFamousQuery(false));;
+                            const form = e.currentTarget;
+                            const convertedQuery = form.elements.convertedQuery.value;
+                            const imageURL = form.elements.imageURL.value;
+                            const image = form.elements.image.files[0];
+                            return submitCustomQuery('famous', { convertedQuery, imageURL, image })
+                                .then(() => setEditingFamousQuery(false));
                         }}
                         className="text-center"
                     >
                         <input
                             className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
                             type="text"
+                            name="convertedQuery"
                             placeholder="Enter Famous Figure..."
-                        //defaultValue={customQueries.famous?.convertedQuery || ''}
                         />
+                        <input
+                            className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                            type="text"
+                            name="imageURL"
+                            placeholder="Enter Image URL..."
+                        />
+                        <input type="file" name="image" className="file-input file-input-bordered w-full max-w-xs" />
 
                         <button type="submit" className="btn btn-secondary ml-5">Submit</button>
 
@@ -255,7 +297,7 @@ export default function Images({ real, cartoon, famous, keyword, badImages, addB
                                         <input type="checkbox" checked={showRerollDialog} className="checkbox" onChange={(e) => setShowRerollDialog(e.currentTarget.checked)} />
                                     </label>
                                     {/* reroll button */}
-                                    <label htmlFor="my-modalReroll3" onClick={() => addBadImage(real, 'real')}
+                                    <label htmlFor="my-modalReroll3" onClick={() => addBadImage(famous, 'famous')}
                                         className="btn btn-primary text-white">
                                         REROLL
                                     </label>

@@ -73,13 +73,16 @@ const useCustomQueries = (originalQuery) => {
       .then((customQueries) => setCustomQueriesValues(customQueries));
   }, [originalQuery]);
 
-  const setCustomQuery = async (type, convertedQuery) => {
+  const setCustomQuery = async (type, { convertedQuery, imageURL, image }) => {
+    const body = new FormData();
+    if (imageURL) body.append("imageURL", imageURL)
+    if (convertedQuery) body.append("convertedQuery", convertedQuery);
+    if (image) body.append("image", image);
+    body.append("type", type);
+
     const response = await fetch("/api/custom-query/" + originalQuery, {
-      headers: {
-        "Content-Type": "application/json",
-      },
       method: "POST",
-      body: JSON.stringify({ type, convertedQuery }),
+      body
     });
     const dataJ = await response.json();
     const newCustomQueries = { ...customQueries };
@@ -223,8 +226,8 @@ export default function Api({ user }) {
   const reRollButton = (url, type) => {
     addBadImage(url, type)
   };
-  const submitCustomQuery = (type, convertedQuery) => {
-    if (convertedQuery) return setCustomQuery(type, convertedQuery);
+  const submitCustomQuery = (type, { convertedQuery, imageURL, image }) => {
+    if (convertedQuery || imageURL || image) return setCustomQuery(type, { convertedQuery, imageURL, image });
     else return deleteCustomQuery(type);
   };
 

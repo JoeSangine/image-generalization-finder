@@ -7,7 +7,20 @@ const CustomQuerySchema = new mongoose.Schema({
     },
     convertedQuery: {
         type: String,
-        required: true,
+        required: false,
+    },
+    image: {
+        type: {
+            url: {
+                type: String,
+                required: true,
+            },
+            cloudinaryId: {
+                type: String,
+                required: false,
+            }
+        },
+        required: false,
     },
     type: {
         type: String,

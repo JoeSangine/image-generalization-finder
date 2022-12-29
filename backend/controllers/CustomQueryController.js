@@ -1,15 +1,40 @@
 const CustomQuery = require("../models/CustomQuery");
+const cloudinary = require("../middleware/cloudinary");
 
 module.exports = {
     createCustomQuery: async (req, res) => {
         try {
-            const newCustomQuery = await CustomQuery.create({
+            const data = {
                 user: req.user?.id,
                 type: req.body.type,
                 originalQuery: req.params.originalQuery,
                 convertedQuery: req.body.convertedQuery,
+            }
+            if (req.body.imageURL) data.image = {
+                url: req.body.imageURL,
+            }
+
+            if (req.file) {
+                const result = await cloudinary.uploader.upload(req.file.path);
+                data.image = {
+                    url: result.secure_url,
+                    cloudinaryID: result.public_id,
+                }
+            }
+
+            const oldQuery = await CustomQuery.findOne({
+                user: req.user?.id,
+                originalQuery: req.params.originalQuery,
+                type: req.body.type,
             });
-            res.json(newCustomQuery);
+            if (!oldQuery) return res.json(await CustomQuery.create(data));
+
+            if (oldQuery.image?.cloudinaryID) {
+                await cloudinary.uploader.destroy(oldQuery.image.cloudinaryID);
+            }
+            oldQuery.convertedQuery = req.body.convertedQuery;
+            oldQuery.image = data.image;
+            res.json(await oldQuery.save());
         } catch (err) {
             console.log(err);
         }
