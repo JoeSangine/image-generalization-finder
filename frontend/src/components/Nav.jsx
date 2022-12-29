@@ -60,7 +60,7 @@ export default function Nav({ user, setUser }) {
             id="my-modalAbout"
             className="modal-toggle" />
         <label htmlFor="my-modalAbout" className="modal bg-opacity-90 cursor-pointer">
-            <div className="modal-box">
+            <div className="modal-box w-10/12 max-w-4xl">
                 <form action="/api/login" method="POST">
                     <div className="flex flex-auto pb-6">
                         <i className="fa-solid fa-school pb-2 text-5xl ml-4"></i>
@@ -108,7 +108,7 @@ export default function Nav({ user, setUser }) {
                         <h1 className="text-center pl-8 pt-2 text-4xl">Instructions</h1>
                     </div>
                     <br></br>
-                    <ul className="list-disc">
+                    <ul className="list-disc pl-5">
                         <li> Login to get the app started!</li>
                         <br></br>
                         <li> Type in the Search input above to generate a real and a cartoon image     </li>

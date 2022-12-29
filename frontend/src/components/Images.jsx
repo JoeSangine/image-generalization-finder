@@ -52,18 +52,18 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         className="text-center"
                     >
                         <input
-                            className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                            className="m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
                             type="text"
                             name="convertedQuery"
                             placeholder="Enter Real Figure..."
                         />
                         <input
-                            className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                            className="m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
                             type="text"
                             name="imageURL"
                             placeholder="Enter Image URL..."
                         />
-                        <input type="file" name="image" className="file-input file-input-bordered w-full max-w-xs" />
+                        <input type="file" name="image" className="m-1 file-input file-input-bordered w-full max-w-xs" />
 
                         <button type="submit" className="btn btn-secondary ml-5">Submit</button>
                     </form>
@@ -154,18 +154,18 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         className="text-center"
                     >
                         <input
-                            className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                            className="m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
                             type="text"
                             name="convertedQuery"
                             placeholder="Enter Cartoon Figure..."
                         />
                         <input
-                            className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                            className="m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
                             type="text"
                             name="imageURL"
                             placeholder="Enter Image URL..."
                         />
-                        <input type="file" name="image" className="file-input file-input-bordered w-full max-w-xs" />
+                        <input type="file" name="image" className="m-1 file-input file-input-bordered w-full max-w-xs" />
 
                         <button type="submit" className="btn btn-secondary ml-5">Submit</button>
                     </form>
@@ -261,18 +261,18 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         className="text-center"
                     >
                         <input
-                            className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                            className="m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
                             type="text"
                             name="convertedQuery"
                             placeholder="Enter Famous Figure..."
                         />
                         <input
-                            className="input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                            className="m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
                             type="text"
                             name="imageURL"
                             placeholder="Enter Image URL..."
                         />
-                        <input type="file" name="image" className="file-input file-input-bordered w-full max-w-xs" />
+                        <input type="file" name="image" className="m-1 file-input file-input-bordered w-full max-w-xs" />
 
                         <button type="submit" className="btn btn-secondary ml-5">Submit</button>
 
