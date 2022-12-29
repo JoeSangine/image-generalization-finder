@@ -18,26 +18,29 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
     const [editingRealQuery, setEditingRealQuery] = useState(false)
     const [editingCartoonQuery, setEditingCartoonQuery] = useState(false)
     const [editingFamousQuery, setEditingFamousQuery] = useState(false)
-    return <div className='flex m-5 rounded-lg gap-8 flex-col md:flex-row items-center md:items-stretch'>
+    const showingRealForm = user && editingRealQuery
+    const showingCartoonForm = user && editingCartoonQuery
+    const showingFamousForm = user && (!customQueries.famous || editingFamousQuery)
+    return <div className='flex m-4 rounded-lg gap-8 flex-col md:flex-row items-center h-[75vh]'>
 
-        <div className="card w-96 bg-base-100 shadow-xl flex-auto border-2 border-[#ffffff50]">
-            <div className=" text-center font-bold pt-4 text-2xl text-white">
+        <div className="flex flex-col max-h-max w-96 bg-base-100 shadow-xl flex-auto border-2 border-[#ffffff50]">
+            <div className="basis-0 text-center font-bold pt-4 text-2xl text-white">
                 {'Real ' + (keyword || 'Owl')}
             </div>
 
-            <figure>
+            <figure className="shrink basis-1/2">
                 {INITIAL_OVERRIDES[keyword]?.real || ((real || customQueries.real?.image?.url) && keyword) ? <img
                     src={customQueries.real?.image?.url || INITIAL_OVERRIDES[keyword]?.real || real}
                     alt="Real"
-                    className="aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] "
+                    className={`aspect-[3/2] mt-4 ${showingRealForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     xmlns="http://placekitten.com/200/300"
 
 
                     onError={() => addBadImage(real, 'real')}
-                /> : <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>}
+                /> : <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingRealForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>}
             </figure>
 
-            <div className="card-body text-center">
+            <div className="basis-3/12 card-body text-center">
                 {user && editingRealQuery ? (
                     <form
                         onSubmit={(e) => {
@@ -51,21 +54,27 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         }}
                         className="text-center"
                     >
-                        <input
-                            className="m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
-                            type="text"
-                            name="convertedQuery"
-                            placeholder="Enter Real Figure..."
-                        />
-                        <input
-                            className="m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
-                            type="text"
-                            name="imageURL"
-                            placeholder="Enter Image URL..."
-                        />
-                        <input type="file" name="image" className="m-1 file-input file-input-bordered w-full max-w-xs" />
+                        <div className="flex">
+                            <input
+                                className="flex-1 w-[10vw] m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                                type="text"
+                                name="convertedQuery"
+                                placeholder="Enter Real Figure..."
+                            />
+                            <input
+                                className="flex-1 w-[10vw] m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                                type="text"
+                                name="imageURL"
+                                placeholder="Enter Image URL..."
+                            />
+                        </div>
+                        <div className="flex">
+                            <input type="file" name="image" className="flex-1 w-[10vw] m-1 file-input file-input-bordered" />
 
-                        <button type="submit" className="btn btn-secondary ml-5">Submit</button>
+                            <button type="submit" className="flex-1 w-[10vw] btn btn-secondary ml-5">Submit</button>
+                        </div>
+                        <br></br>
+                        <br></br>
                     </form>
                 ) : <h2>
                     {/* Modal 1 start */}
@@ -127,20 +136,20 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 </div>
             </div>
         </div>
-        <div className="card w-96 bg-base-100 shadow-xl flex-auto border-2 border-[#ffffff50]">
-            <div className="text-center font-bold pt-4 text-2xl text-white">
+        <div className="flex flex-col max-h-max w-96 bg-base-100 shadow-xl flex-auto border-2 border-[#ffffff50]">
+            <div className="basis-0 text-center font-bold pt-4 text-2xl text-white">
                 {'Cartoon ' + (keyword || 'Owl')}
             </div>
-            <figure >
+            <figure className="shrink basis-1/2">
                 {INITIAL_OVERRIDES[keyword]?.cartoon || ((cartoon || customQueries.cartoon?.image?.url) && keyword) ? <img
                     src={customQueries.cartoon?.image?.url || INITIAL_OVERRIDES[keyword]?.cartoon || cartoon}
-                    className="aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]"
+                    className={`aspect-[3/2] mt-4 ${showingCartoonForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     alt="Cartoon"
                     onError={() => addBadImage(cartoon, 'cartoon')}
-                /> : <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>}
+                /> : <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingCartoonForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>}
             </figure>
-            <div className="card-body text-center">
-                {user && editingCartoonQuery ? (
+            <div className="basis-3/12 card-body text-center">
+                {showingCartoonForm ? (
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
@@ -153,21 +162,27 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         }}
                         className="text-center"
                     >
-                        <input
-                            className="m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
-                            type="text"
-                            name="convertedQuery"
-                            placeholder="Enter Cartoon Figure..."
-                        />
-                        <input
-                            className="m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
-                            type="text"
-                            name="imageURL"
-                            placeholder="Enter Image URL..."
-                        />
-                        <input type="file" name="image" className="m-1 file-input file-input-bordered w-full max-w-xs" />
+                        <div className="flex">
+                            <input
+                                className="flex-1 w-[10vw] m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                                type="text"
+                                name="convertedQuery"
+                                placeholder="Enter Cartoon Figure..."
+                            />
+                            <input
+                                className="flex-1 w-[10vw] m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                                type="text"
+                                name="imageURL"
+                                placeholder="Enter Image URL..."
+                            />
+                        </div>
+                        <div className="flex">
+                            <input type="file" name="image" className="flex-1 w-[10vw] m-1 file-input file-input-bordered" />
 
-                        <button type="submit" className="btn btn-secondary ml-5">Submit</button>
+                            <button type="submit" className="flex-1 w-[10vw] btn btn-secondary ml-5">Submit</button>
+                        </div>
+                        <br></br>
+                        <br></br>
                     </form>
                 ) : <h2>
                     {/* Modal 2 start */}
@@ -230,23 +245,21 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 </div>
             </div>
         </div>
-
-
-        <div className="card w-96 bg-base-100 shadow-xl flex-auto border-2 border-[#ffffff50] ">
-            <div className="text-center font-bold pt-4 text-2xl text-white">
+        <div className="flex flex-col max-h-max w-96 bg-base-100 shadow-xl flex-auto border-2 border-[#ffffff50] ">
+            <div className="basis-0 text-center font-bold pt-4 text-2xl text-white">
                 {'Famous ' + (keyword || 'Owl')}
 
             </div>
-            <figure>
+            <figure className="shrink basis-1/2">
                 {INITIAL_OVERRIDES[keyword]?.famous || (((customQueries.famous && famous) || customQueries.famous?.image?.url) && keyword) ? <img
                     src={customQueries.famous?.image?.url || INITIAL_OVERRIDES[keyword]?.famous || famous}
                     alt="Famous"
-                    className="aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]"
+                    className={`aspect-[3/2] mt-4 ${showingFamousForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     onError={() => addBadImage(famous, 'famous')}
-                /> : <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] w-[75vw] md:w-[50vw] mt-4 max-w-[95%] rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>}
+                /> : <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingFamousForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>}
             </figure>
 
-            <div className="card-body text-center">
+            <div className="basis-1/2 card-body text-center">
                 {user && (!customQueries.famous || editingFamousQuery) ? (
                     <form
                         onSubmit={(e) => {
@@ -260,21 +273,25 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         }}
                         className="text-center"
                     >
-                        <input
-                            className="m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
-                            type="text"
-                            name="convertedQuery"
-                            placeholder="Enter Famous Figure..."
-                        />
-                        <input
-                            className="m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
-                            type="text"
-                            name="imageURL"
-                            placeholder="Enter Image URL..."
-                        />
-                        <input type="file" name="image" className="m-1 file-input file-input-bordered w-full max-w-xs" />
+                        <div className="flex">
+                            <input
+                                className="flex-1 w-[10vw] m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                                type="text"
+                                name="convertedQuery"
+                                placeholder="Enter Famous Figure..."
+                            />
+                            <input
+                                className="flex-1 w-[10vw] m-1 input input-bordered input-secondary col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 drop-shadow-[0_0_25px_rgba(225,225,225,.10)] border-dark "
+                                type="text"
+                                name="imageURL"
+                                placeholder="Enter Image URL..."
+                            />
+                        </div>
+                        <div className="flex">
+                            <input type="file" name="image" className="flex-1 w-[10vw] m-1 file-input file-input-bordered" />
 
-                        <button type="submit" className="btn btn-secondary ml-5">Submit</button>
+                            <button type="submit" className="flex-1 w-[10vw] btn btn-secondary ml-5">Submit</button>
+                        </div>
 
                         <p className="pt-2">For the Famous Image I need help. Can you please input a famous character in the text box below so that we can save it the next time you use this app :)</p>
                     </form>
@@ -338,7 +355,5 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 </div>
             </div>
         </div>
-
-
-    </div >
+    </div>
 }

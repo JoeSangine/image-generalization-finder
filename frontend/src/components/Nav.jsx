@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 
-
 export default function Nav({ user, setUser }) {
     const [message, setMessage] = useState('')
     // use state for logout button to appear when user is logged in
