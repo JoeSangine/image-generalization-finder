@@ -11,14 +11,14 @@ Optimizations
 <ul>
  <li> backend doesnt respond nav goes bye bye fix that  (can do last doesnt affect user just devs)</li>
  <li>user history</li>
- <li>upload custom images</li>
+ 
  <li> settings widget to bring back rerolls after custom image uploaded aka history</li>
  <li> Blacklist image permanent button </li>
  <li>animation nation</li>
  <li> ADD GIF TO THIS README and improve description and readme in general </li>
- <li> fix weird data issues </li>
+
  <li> REFACTOR TO MAKE CODE MORE EFFICENT AND CLEAN CONSTANTLY </li>
- 
+ <li> For fun redo this project in Next and typescript </li>
 </ul>
 
 
