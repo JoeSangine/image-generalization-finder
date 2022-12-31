@@ -11,13 +11,15 @@
         background: #AD1F87;
         /*background: linear-gradient(172deg, rgba(180, 80, 99, 1) 0%, rgba(25, 29, 36, 1) 15%, rgba5014B8 27%, rgba(183, 93, 36, 1) 50%, rgba5014B8 74%, rgba(25, 29, 36, 1) 84%, rgba(180, 80, 99, 1) 95%);*/
         background: repeating-linear-gradient(var(--angle),
-                #AD1F87,
-                #606d88,
-                #5014b8,
-                #b6acc8a2,
-                #6b1cf3,
-                #667697,
-                #AD1F87 var(--d));
+                hsl(316, 70%, 60%),
+                hsl(220, 19%, 60%),
+                hsl(262, 80%, 50%),
+                hsla(261, 20%, 83%, 0.635),
+                hsl(262, 80%, 50%),
+                hsl(220, 19%, 60%),
+                hsl(316, 70%, 60%) var(--d));
+        /*         #70d6ff, #ff70a6, #ff9770, #ffd670, #e9ff70, #ffd670, #ff9770, #ff70a6, #70d6ff var(--d));*/
+
         background-size: calc(var(--d)/var(--sinus)) 300%;
         animation: gradient 42s linear infinite reverse;
     }

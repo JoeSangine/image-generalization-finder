@@ -310,10 +310,12 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 ) :
                     <h2>
                         {/* Modal 3 start */}
+                        <br></br>
                         <input
                             type="checkbox"
                             id="my-modalReroll3"
                             className="modal-toggle" />
+                        <br></br>
 
                         <label htmlFor="my-modalReroll3" className="modal bg-opacity-90 cursor-pointer">
                             <label className="modal-box" htmlFor="">
