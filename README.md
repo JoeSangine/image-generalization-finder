@@ -1,5 +1,8 @@
 Image Generalization Finder
-This app is built to help children with Autism in their development and education. My wife is a behavioral technician for children with Autism and they often use an excersize that requires her and many of her coworkers to need to manually get images to use. Generalization is what this is going to help with. This app will display 3 images based off of a single input. For example, if you type in the word dog you will recieve a Real dog, Generic Cartoon dog, and a Famous dog. All three containers will always be tied to the words Real, Cartoon, and Famous. This will save behavioral techs and anyone who is helping children learn generalization a ton of excess time and effort that could be used helping the children!
+Autism is a social impairment that makes it difficult for individuals to relate to their surroundings and others. Through Applied Behavior Analysis this website is designed to help with the vital skill of generalization. Generalization is the ability to perform a skill in different circumstances or with different objects. It starts with an idea of exposure to different types of objects (a novel or real life example, a cartoon version and a well known version) to help a learner understand that things can be the same even when they appear to be different. Once a learner has this skill it can lead to them generalizing things like hi meaning the same thing as hey or that the parts on a bicycle in a picture are also the same as the real bicycle a person can sit on. 
+Teaching people how to make these connections in the world allows them to better understand everything around them.
+
+
 ![image](https://cdn.discordapp.com/attachments/735946770210619555/1057177196554362910/image.png)
 
 Link to project: (https://imagegeneralizationfinder.cyclic.app/)
@@ -19,6 +22,10 @@ Optimizations
 
  <li> REFACTOR TO MAKE CODE MORE EFFICENT AND CLEAN CONSTANTLY </li>
  <li> For fun redo this project in Next and typescript </li>
+ <li>play with color pallet</li>
+ <li>backend cacheing </li>
+ <li> tutorial video / gif </li>
+  <li> security checks </li>
 </ul>
 
 
