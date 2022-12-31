@@ -18,7 +18,7 @@
                 #6b1cf3,
                 #667697,
                 #AD1F87 var(--d));
-        background-size: calc(var(--d)/var(--sinus)) 100%;
+        background-size: calc(var(--d)/var(--sinus)) 300%;
         animation: gradient 42s linear infinite reverse;
     }
         @keyframes gradient {

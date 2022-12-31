@@ -244,18 +244,18 @@ export default function Api({ user }) {
         {user
           ?
           <form
-            className="text-center"
+            className="text-center flex flex-col xl:flex-row gap-2"
             onSubmit={(e) => {
               e.preventDefault();
               setQuery(e.target.elements[0].value);
             }}
           >
             <input
-              className="input text-center input-bordered input-accent col-3 form-control-sm py-1 fs-4 text-capitalize ml-24 drop-shadow-[0_0_25px_rgba(0,0,0,.4)] border-2 border-[#ffffff50] mt-2"
+              className="input flex-auto text-center xl:ml-24 input-bordered input-accent form-control-sm py-1 text-capitalize drop-shadow-[0_0_25px_rgba(0,0,0,.4)] border-2 border-[#ffffff50]"
               type="text"
               placeholder="Search for Images Here..."
             />
-            <button type="submit" className="btn btn-secondary ml-4">
+            <button type="submit" className="btn flex-auto btn-secondary">
               Submit
             </button>
           </form>

@@ -33,25 +33,59 @@ export default function Nav({ user, setUser }) {
     }
 
     if (user === undefined) {
-        return <h1>YOUS ALREADY ON FOOL</h1>
+        return null;
     }
     // Text and eventually logo below
     return <nav className="drop-shadow-[10px_10px_10px_rgba(0, 0, 0, 1)] mb-6 flex justify-end py-1 bg-[#191d24e3] text-[#ffffffe6]">
         <div className="flex flex-auto" >
             <i className="fa-solid fa-school pt-1 text-5xl ml-10"></i>
-            <h1 className="pl-2 md:pl-20 pt-2 font-extrabold md:text-4xl tracking-widest text-center text-[#ffffffd8]">
+            <h1 className="pl-4 xl:pl-20 pt-4 xl:pt-2 font-extrabold xl:text-4xl tracking-widest text-center text-[#ffffffd8]">
                 Image Generalization Finder
             </h1>
+        </div>
 
-
-
-
+        <div className="dropdown dropdown-end xl:hidden my-1">
+            <label tabIndex={0} className="btn btn-ghost rounded-btn">Menu</label>
+            <ul tabIndex={0} className="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+                <li>
+                    <label
+                        htmlFor="my-modalAbout"
+                        className="btn btn-outline btn-secondary my-1">
+                        About
+                    </label>
+                </li>
+                <li>
+                    <label
+                        htmlFor="my-modalHow"
+                        className="btn btn-outline btn-primary my-1">
+                        How It Works
+                    </label>
+                </li>
+                {user !== null ? <li>
+                    <button className="btn btn-outline btn-secondary my-1" onClick={() => fetch('/api/logout').then(user => setUser(null))}> LOGOUT</button>
+                </li> : <>
+                    <li>
+                        <label
+                            htmlFor="my-modal2"
+                            className="btn btn-outline btn-primary my-1">
+                            Login
+                        </label>
+                    </li>
+                    <li>
+                        <label
+                            htmlFor="my-modal"
+                            className="btn btn-outline btn-secondary my-1">
+                            Signup
+                        </label>
+                    </li>
+                </>}
+            </ul>
         </div>
 
         {/* About Modal  */}
         <label
             htmlFor="my-modalAbout"
-            className="btn mr-10 btn-outline btn-secondary my-1">
+            className="btn mr-5 btn-outline btn-secondary my-1 hidden xl:flex">
             About
         </label>
         <input
@@ -67,10 +101,11 @@ export default function Nav({ user, setUser }) {
                     </div>
 
                     <p className="indent-5 tracking-widest">
-                        Image Generalization Finder This app is built to help children with Autism in their development and education. My wife is a behavioral technician for children with Autism and they often use an excersize that requires her and many of her coworkers to need to manually get images to use. Generalization is what this is going to help with. This app will display 3 images based off of a single input.
+                        Autism is a social impairment that makes it difficult for individuals to relate to their surroundings and others. Through Applied Behavior Analysis this website is designed to help with the vital skill of generalization. Generalization is the ability to perform a skill in different circumstances or with different objects. It starts with an idea of exposure to different types of objects (a novel or real life example, a cartoon version and a well known version) to help a learner understand that things can be the same even when they appear to be different.
                         <br></br>
                         <br></br>
-                        For example, if you type in the word dog you will recieve a Real dog, Generic Cartoon dog, and a Famous dog. All three containers will always be tied to the words Real, Cartoon, and Famous. This will save behavioral techs and anyone who is helping children learn generalization a ton of excess time and effort that could be used helping the children!
+                        Once a learner has this skill it can lead to them generalizing things like hi meaning the same thing as hey or that the parts on a bicycle in a picture are also the same as the real bicycle a person can sit on.
+                        Teaching people how to make these connections in the world allows them to better understand everything around them.
                     </p>
 
 
@@ -92,7 +127,7 @@ export default function Nav({ user, setUser }) {
         {/* How it works  */}
         <label
             htmlFor="my-modalHow"
-            className="btn mr-10 btn-outline btn-primary my-1">
+            className="btn mr-5 btn-outline btn-primary my-1 hidden xl:flex">
             How It Works
         </label>
         <input
@@ -144,13 +179,13 @@ export default function Nav({ user, setUser }) {
         {/*  LOGIN MODAL BELOW */}
 
         {user !== null ? <>
-            <h3 className="hidden md:block pt-3 pr-10 text-2xl">{user.userName}</h3>
-            <button className="btn mr-1 md:mr-10 btn-outline btn-secondary my-1" onClick={() => fetch('/api/logout').then(user => setUser(null))}> LOGOUT</button>
+            <h3 className="hidden xl:block pt-3 pr-10 text-2xl">{user.userName}</h3>
+            <button className="btn mr-1 md:mr-5 btn-outline btn-secondary my-1 hidden xl:flex" onClick={() => fetch('/api/logout').then(user => setUser(null))}> LOGOUT</button>
         </>
             : <>
                 <label
                     htmlFor="my-modal2"
-                    className="btn mr-10 btn-outline btn-primary my-1">
+                    className="btn mr-5 btn-outline btn-primary my-1 hidden xl:flex">
                     Login
                 </label>
                 <input
@@ -161,7 +196,7 @@ export default function Nav({ user, setUser }) {
                 <label htmlFor="my-modal2" className="modal bg-opacity-90 cursor-pointer">
                     <div className="modal-box">
                         <form action="/api/login" method="POST" onSubmit={handleLogin}>
-                            {message ? <div className="alert alert-error shadow-lg mb-5">
+                            {message ? <div className="alert alert-error shadow-xl mb-5">
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                     <span>{message}</span>
@@ -197,7 +232,7 @@ export default function Nav({ user, setUser }) {
 
                 <label
                     htmlFor="my-modal"
-                    className="btn btn-outline btn-secondary mr-10 my-1">
+                    className="btn btn-outline btn-secondary mr-5 my-1 hidden xl:flex">
                     Signup
                 </label>
                 <input
@@ -207,7 +242,7 @@ export default function Nav({ user, setUser }) {
                 <label htmlFor="my-modal" className="modal bg-opacity-90 cursor-pointer">
                     <div className="modal-box">
                         <form action="/api/signup" method="POST" onSubmit={handleSignup}>
-                            {message ? <div className="alert alert-error shadow-lg mb-5">
+                            {message ? <div className="alert alert-error shadow-xl mb-5">
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                     <span>{message}</span>

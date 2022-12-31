@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 
 const INITIAL_OVERRIDES = {
@@ -18,12 +18,13 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
     const [editingRealQuery, setEditingRealQuery] = useState(false)
     const [editingCartoonQuery, setEditingCartoonQuery] = useState(false)
     const [editingFamousQuery, setEditingFamousQuery] = useState(false)
+
     const showingRealForm = user && editingRealQuery
     const showingCartoonForm = user && editingCartoonQuery
     const showingFamousForm = user && (!customQueries.famous || editingFamousQuery)
-    return <div className='flex m-4 rounded-lg gap-8 flex-col md:flex-row items-center h-[75vh]'>
+    return <div className='flex m-4 rounded-lg gap-8 flex-col xl:flex-row items-center pb-[12.5vh] xl:pb-0 xl:h-[75vh]'>
 
-        <div className="flex flex-col max-h-max w-96 bg-base-100 shadow-xl flex-auto border-2 border-[#ffffff50]">
+        <div className="flex flex-col max-h-max w-80 md:w-96 bg-base-100 min-h-[62.5vh] shadow-xl flex-auto border-2 border-[#ffffff50]">
             <div className="basis-0 text-center font-bold pt-4 text-2xl text-white">
                 {'Real ' + (keyword || 'Owl')}
             </div>
@@ -34,12 +35,12 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     alt="Real"
                     className={`aspect-[3/2] mt-4 ${showingRealForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     xmlns="http://placekitten.com/200/300"
-
-
                     onError={() => addBadImage(real, 'real')}
-                /> : <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingRealForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>}
+                /> : <>
+                    <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingRealForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>
+                    <progress className="progress progress-info w-[92.5%] m-auto"></progress>
+                </>}
             </figure>
-
             <div className="basis-3/12 card-body text-center">
                 {user && editingRealQuery ? (
                     <form
@@ -78,11 +79,13 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     </form>
                 ) : <h2>
                     {/* Modal 1 start */}
+
+                    <br></br>
                     <input
                         type="checkbox"
                         id="my-modalReroll1"
                         className="modal-toggle" />
-
+                    <br></br>
                     <label htmlFor="my-modalReroll1" className="modal bg-opacity-90 cursor-pointer">
                         <label className="modal-box" htmlFor="">
                             <div>
@@ -136,7 +139,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 </div>
             </div>
         </div>
-        <div className="flex flex-col max-h-max w-96 bg-base-100 shadow-xl flex-auto border-2 border-[#ffffff50]">
+        <div className="flex flex-col max-h-max w-80 md:w-96 bg-base-100 min-h-[62.5vh] shadow-xl flex-auto border-2 border-[#ffffff50]">
             <div className="basis-0 text-center font-bold pt-4 text-2xl text-white">
                 {'Cartoon ' + (keyword || 'Owl')}
             </div>
@@ -146,7 +149,10 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     className={`aspect-[3/2] mt-4 ${showingCartoonForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     alt="Cartoon"
                     onError={() => addBadImage(cartoon, 'cartoon')}
-                /> : <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingCartoonForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>}
+                /> : <>
+                    <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingCartoonForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>
+                    <progress className="progress progress-info w-[92.5%] m-auto"></progress>
+                </>}
             </figure>
             <div className="basis-3/12 card-body text-center">
                 {showingCartoonForm ? (
@@ -185,11 +191,14 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         <br></br>
                     </form>
                 ) : <h2>
+
+                    <br></br>
                     {/* Modal 2 start */}
                     <input
                         type="checkbox"
                         id="my-modalReroll2"
                         className="modal-toggle" />
+                    <br></br>
 
                     <label htmlFor="my-modalReroll2" className="modal bg-opacity-90 cursor-pointer">
                         <label className="modal-box" htmlFor="">
@@ -245,7 +254,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 </div>
             </div>
         </div>
-        <div className="flex flex-col max-h-max w-96 bg-base-100 shadow-xl flex-auto border-2 border-[#ffffff50] ">
+        <div className="flex flex-col max-h-max w-80 md:w-96 bg-base-100 min-h-[62.5vh] shadow-xl flex-auto border-2 border-[#ffffff50] ">
             <div className="basis-0 text-center font-bold pt-4 text-2xl text-white">
                 {'Famous ' + (keyword || 'Owl')}
 
@@ -256,7 +265,10 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     alt="Famous"
                     className={`aspect-[3/2] mt-4 ${showingFamousForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     onError={() => addBadImage(famous, 'famous')}
-                /> : <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingFamousForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>}
+                /> : <>
+                    <svg className={`${keyword && customQueries.famous ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingFamousForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>
+                    {keyword && customQueries.famous ? <progress className="progress progress-info w-[92.5%] m-auto"></progress> : null}
+                </>}
             </figure>
 
             <div className="basis-1/2 card-body text-center">
