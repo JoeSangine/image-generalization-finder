@@ -81,11 +81,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     {/* Modal 1 start */}
 
                     <br></br>
+                    <br></br>
                     <input
                         type="checkbox"
                         id="my-modalReroll1"
                         className="modal-toggle" />
-                    <br></br>
                     <label htmlFor="my-modalReroll1" className="modal bg-opacity-90 cursor-pointer">
                         <label className="modal-box" htmlFor="">
                             <div>
@@ -193,12 +193,12 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 ) : <h2>
 
                     <br></br>
+                    <br></br>
                     {/* Modal 2 start */}
                     <input
                         type="checkbox"
                         id="my-modalReroll2"
                         className="modal-toggle" />
-                    <br></br>
 
                     <label htmlFor="my-modalReroll2" className="modal bg-opacity-90 cursor-pointer">
                         <label className="modal-box" htmlFor="">
@@ -311,12 +311,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     <h2>
                         {/* Modal 3 start */}
                         <br></br>
+                        <br></br>
                         <input
                             type="checkbox"
                             id="my-modalReroll3"
                             className="modal-toggle" />
-                        <br></br>
-
                         <label htmlFor="my-modalReroll3" className="modal bg-opacity-90 cursor-pointer">
                             <label className="modal-box" htmlFor="">
                                 <div>
