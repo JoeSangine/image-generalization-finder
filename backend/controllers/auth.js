@@ -90,7 +90,7 @@ exports.postSignup = (req, res, next) => {
         return next(err);
       }
       if (existingUser) {
-        return res.json({ user, message: "Account with that email address or username already exists." })
+        return res.json({ message: "Account with that email address or username already exists." })
       }
       user.save((err) => {
         if (err) {

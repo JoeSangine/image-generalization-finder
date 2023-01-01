@@ -56,7 +56,10 @@ module.exports = {
     },
     deleteCustomQuery: async (req, res) => {
         try {
-            const deletedCustomQuery = await CustomQuery.findByIdAndDelete(req.params.id);
+            await CustomQuery.findOneAndDelete({
+                _id: req.params.id,
+                user: req.user?.id,
+            });
             res.status(200).end();
         } catch (err) {
             console.log(err);
