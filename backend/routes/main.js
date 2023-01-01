@@ -13,5 +13,5 @@ router.get("/logout", authController.logout);
 router.get("/signup", authController.getSignup);
 router.post("/signup", authController.postSignup);
 router.get("/user", authController.getUser);
-router.get("/bad-images", ensureAPIAuth, authController.getBadImages);
+router.get("/bad-images", authController.getBadImages);
 module.exports = router;

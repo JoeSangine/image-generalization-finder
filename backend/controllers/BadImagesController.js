@@ -17,10 +17,7 @@ module.exports = {
   },
   removeBadImage: async (req, res) => {
     try {
-      // Find post by id
-      let badImage = await BadImage.findById({ _id: req.params.id });
-      // Delete post from db
-      await BadImage.remove({ _id: req.params.id });
+      await BadImage.deleteOne({ _id: req.params.id, user: req.user?.id });
       console.log("Deleted Image");
       res.status(200).end();
     } catch (err) {
