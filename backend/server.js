@@ -17,9 +17,6 @@ require("dotenv").config({ path: "./config/.env" });
 // Passport config
 require("./config/passport")(passport);
 
-//Connect To Database
-connectDB();
-
 //Using EJS for views
 app.set("view engine", "ejs");
 
@@ -36,30 +33,33 @@ app.use(logger("dev"));
 //Use forms for put / delete
 app.use(methodOverride("_method"));
 
-// Setup Sessions - stored in MongoDB
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-  })
-);
+//Connect To Database
+connectDB().then(() => {
+  // Setup Sessions - stored in MongoDB
+  app.use(
+    session({
+      secret: "keyboard cat",
+      resave: false,
+      saveUninitialized: false,
+      store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    })
+  );
 
-// Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+  // Passport middleware
+  app.use(passport.initialize());
+  app.use(passport.session());
 
-//Use flash messages for errors, info, ect...
-app.use(flash());
+  //Use flash messages for errors, info, ect...
+  app.use(flash());
 
-//Setup Routes For Which The Server Is Listening
-app.use("/api/", mainRoutes);
-app.use("/api/BadImages", BadImagesRouter);
-app.use("/api/custom-query", CustomQueryRouter);
+  //Setup Routes For Which The Server Is Listening
+  app.use("/api/", mainRoutes);
+  app.use("/api/BadImages", BadImagesRouter);
+  app.use("/api/custom-query", CustomQueryRouter);
 
 
-//Server Running
-app.listen(process.env.PORT, () => {
-  console.log("Server is running, you better catch it!");
+  //Server Running
+  app.listen(process.env.PORT, () => {
+    console.log("Server is running, you better catch it!");
+  });
 });
