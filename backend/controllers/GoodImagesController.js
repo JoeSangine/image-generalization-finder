@@ -26,8 +26,8 @@ module.exports = {
         try {
             const newGoodImages = await GoodImage.find({
                 user: req.user?.id,
-                query: req.params.	query
-            }).sort({ _id: -1 });
+                query: req.params.query
+            }).sort({ updatedAt: -1 });
             const goodImagesByType = newGoodImages.reduce((acc, query) => {
                 if (acc[query.type]) {
                     acc[query.type].push(query);
@@ -51,7 +51,20 @@ module.exports = {
         } catch (err) {
             console.log(err);
         }
-    }
+    },
+    selectGoodImage: async (req, res) => {
+        try {
+            const updatedGoodImage = await GoodImage
+                .findOneAndUpdate(
+                    { _id: req.params.id, user: req.user?.id },
+                    { $set: { updatedAt: Date.now() } },
+                    { new: true }
+                );
+            res.json(updatedGoodImage);
+        } catch (err) {
+            console.log(err);
+        }
+    },
 };
 
 

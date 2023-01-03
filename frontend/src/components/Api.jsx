@@ -93,9 +93,9 @@ const useGoodImages = (query) => {
     setGoodImagesValues(newGoodImages);
   };
 
-  const deleteGoodImage = async (type) => {
-    const goodImageID = goodImages[type][0]._id;
-    await fetch("/api/GoodImages/" + goodImageID, {
+  const deleteGoodImage = async (type, id) => {
+    const goodImageIndex = goodImages[type].findIndex(goodImage => goodImage._id === id)
+    await fetch("/api/GoodImages/" + id, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -105,12 +105,24 @@ const useGoodImages = (query) => {
     if (newGoodImages[type].length === 1) {
       delete newGoodImages[type];
     } else {
-      newGoodImages[type] = [...newGoodImages[type].slice(1)]
+      newGoodImages[type] = [...newGoodImages[type]]
+      newGoodImages[type].splice(goodImageIndex, 1);
     }
     setGoodImagesValues(newGoodImages);
   };
 
-  return [goodImages, addGoodImage, deleteGoodImage];
+  const selectGoodImage = async (type, id) => {
+    const goodImageIndex = goodImages[type].findIndex(goodImage => goodImage._id === id)
+    const response = await fetch("/api/GoodImages/select/" + id);
+    const newGoodImage = await response.json();
+    const newGoodImages = { ...goodImages };
+    newGoodImages[type] = [...newGoodImages[type]]
+    newGoodImages[type].splice(goodImageIndex, 1)
+    newGoodImages[type].unshift(newGoodImage);
+    setGoodImagesValues(newGoodImages);
+  }
+
+  return [goodImages, addGoodImage, deleteGoodImage, selectGoodImage];
 }
 
 const useCustomQueries = (originalQuery) => {
@@ -225,7 +237,7 @@ export default function Api({ user }) {
   const [res, fetchRequestReal] = useRealApi();
   const [famousRes, fetchRequestFamous] = useFamousApi();
   const [customQueries, setCustomQuery, deleteCustomQuery] = useCustomQueries(query);
-  const [goodImages, addGoodImage, deleteGoodImage] = useGoodImages(query);
+  const [goodImages, addGoodImage, deleteGoodImage, selectGoodImage] = useGoodImages(query);
   const prevCustomQueries = usePrevious({}, customQueries);
   const [badImages, addBadImage, removeBadImage] = useBadImages();
   const prevBadImages = usePrevious([], badImages);
@@ -327,6 +339,8 @@ export default function Api({ user }) {
         setShowRerollDialog={setShowRerollDialog}
         goodImages={goodImages}
         addGoodImage={addGoodImage}
+        deleteGoodImage={deleteGoodImage}
+        selectGoodImage={selectGoodImage}
       />
     </div>
   );

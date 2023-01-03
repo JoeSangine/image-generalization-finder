@@ -14,7 +14,7 @@ const INITIAL_OVERRIDES = {
     },
 }
 
-export default function Images({ real, cartoon, famous, keyword = 'owl', badImages, addBadImage, addGoodImage, undoBadImage, goodImages, submitCustomQuery, customQueries, user, showRerollDialog, setShowRerollDialog }) {
+export default function Images({ real, cartoon, famous, keyword = 'owl', badImages, addBadImage, addGoodImage, deleteGoodImage, selectGoodImage, undoBadImage, goodImages, submitCustomQuery, customQueries, user, showRerollDialog, setShowRerollDialog }) {
     const [editingRealQuery, setEditingRealQuery] = useState(false)
     const [editingCartoonQuery, setEditingCartoonQuery] = useState(false)
     const [editingFamousQuery, setEditingFamousQuery] = useState(false)
@@ -73,9 +73,39 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                             />
                         </div>
                         <div className="flex">
-                            <input type="file" name="image" className="flex-1 w-[10vw] m-1 file-input file-input-bordered" />
+                            <input type="file" name="image" className="flex-1 w-[7.75vw] m-1 file-input file-input-bordered" />
 
-                            <button type="submit" className="flex-1 w-[10vw] btn btn-secondary ml-5">Submit</button>
+                            <label htmlFor="real-history-modal" className="flex-1 w-[2.5vw] btn btn-secondary ml-5">
+                                <i className="fa-solid fa-clock-rotate-left"></i>
+                            </label>
+                            <input type="checkbox" id="real-history-modal" className="modal-toggle" />
+                            <label htmlFor="real-history-modal" className="modal cursor-pointer">
+                                <label className="modal-box relative" htmlFor="">
+                                    {goodImages.real?.map(({ url, _id }) => (
+                                        <div key={_id} className="flex flex-col">
+                                            <img src={url} alt="Real" className="aspect-[3/2] mt-4 w-[95%] m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] pb-5" />
+                                            <div className="flex gap-3">
+                                                <button
+                                                    type="button"
+                                                    className="flex-auto btn btn-error"
+                                                    onClick={() => deleteGoodImage('real', _id)}
+                                                >
+                                                    Delete
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="flex-auto btn btn-success"
+                                                    onClick={() => selectGoodImage('real', _id)}
+                                                >
+                                                    Use
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </label>
+                            </label>
+
+                            <button type="submit" className="flex-1 w-[7.75vw] btn btn-secondary ml-5">Submit</button>
                         </div>
                         <br></br>
                         <br></br>
@@ -191,6 +221,35 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         <div className="flex">
                             <input type="file" name="image" className="flex-1 w-[10vw] m-1 file-input file-input-bordered" />
 
+                            <label htmlFor="cartoon-history-modal" className="flex-1 w-[2.5vw] btn btn-secondary ml-5">
+                                <i className="fa-solid fa-clock-rotate-left"></i>
+                            </label>
+                            <input type="checkbox" id="cartoon-history-modal" className="modal-toggle" />
+                            <label htmlFor="cartoon-history-modal" className="modal cursor-pointer">
+                                <label className="modal-box relative" htmlFor="">
+                                    {goodImages.cartoon?.map(({ url, _id }) => (
+                                        <div key={_id} className="flex flex-col">
+                                            <img src={url} alt="Real" className="aspect-[3/2] mt-4 w-[95%] m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] pb-5" />
+                                            <div className="flex gap-3">
+                                                <button
+                                                    type="button"
+                                                    className="flex-auto btn btn-error"
+                                                    onClick={() => deleteGoodImage('cartoon', _id)}
+                                                >
+                                                    Delete
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="flex-auto btn btn-success"
+                                                    onClick={() => selectGoodImage('cartoon', _id)}
+                                                >
+                                                    Use
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </label>
+                            </label>
                             <button type="submit" className="flex-1 w-[10vw] btn btn-secondary ml-5">Submit</button>
                         </div>
                         <br></br>
@@ -311,6 +370,35 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         <div className="flex">
                             <input type="file" name="image" className="flex-1 w-[10vw] m-1 file-input file-input-bordered" />
 
+                            <label htmlFor="famous-history-modal" className="flex-1 w-[2.5vw] btn btn-secondary ml-5">
+                                <i className="fa-solid fa-clock-rotate-left"></i>
+                            </label>
+                            <input type="checkbox" id="famous-history-modal" className="modal-toggle" />
+                            <label htmlFor="famous-history-modal" className="modal cursor-pointer">
+                                <label className="modal-box relative" htmlFor="">
+                                    {goodImages.famous?.map(({ url, _id }) => (
+                                        <div key={_id} className="flex flex-col">
+                                            <img src={url} alt="Real" className="aspect-[3/2] mt-4 w-[95%] m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] pb-5" />
+                                            <div className="flex gap-3">
+                                                <button
+                                                    type="button"
+                                                    className="flex-auto btn btn-error"
+                                                    onClick={() => deleteGoodImage('famous', _id)}
+                                                >
+                                                    Delete
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="flex-auto btn btn-success"
+                                                    onClick={() => selectGoodImage('famous', _id)}
+                                                >
+                                                    Use
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </label>
+                            </label>
                             <button type="submit" className="flex-1 w-[10vw] btn btn-secondary ml-5">Submit</button>
                         </div>
 

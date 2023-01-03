@@ -22,6 +22,6 @@ const GoodImageSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-});
+}, { timestamps: { updatedAt: true }});
 
 module.exports = mongoose.model("GoodImage", GoodImageSchema);
