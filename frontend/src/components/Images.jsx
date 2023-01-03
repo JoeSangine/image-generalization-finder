@@ -22,16 +22,56 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
     const showingRealForm = user && editingRealQuery
     const showingCartoonForm = user && editingCartoonQuery
     const showingFamousForm = user && (!customQueries.famous || editingFamousQuery)
+
+    const realURL = goodImages.real?.[0].url || INITIAL_OVERRIDES[keyword]?.real || real;
+    const isRealURLGood = goodImages.real?.some(good => good.url === realURL);
+
+    const cartoonURL = goodImages.cartoon?.[0].url || INITIAL_OVERRIDES[keyword]?.cartoon || cartoon;
+    const isCartoonURLGood = goodImages.cartoon?.some(good => good.url === cartoonURL);
+
+    const famousURL = goodImages.famous?.[0].url || INITIAL_OVERRIDES[keyword]?.famous || famous;
+    const isFamousURLGood = goodImages.famous?.some(good => good.url === famousURL);
     return <div className='flex m-4 rounded-lg gap-8 flex-col xl:flex-row items-center pb-[12.5vh] xl:pb-0 xl:h-[75vh]'>
 
         <div className="flex flex-col max-h-max w-80 md:w-96 bg-base-100 min-h-[62.5vh] shadow-xl flex-auto border-2 border-[#ffffff50]">
-            <div className="basis-0 text-center font-bold pt-4 text-2xl text-white">
+            <div className="basis-0 text-center font-bold pt-4 text-2xl text-white relative">
+                {goodImages.real?.length ? <div className="tooltip tooltip-right absolute top-5 left-5" data-tip="Click to change image">
+                    <label htmlFor="real-history-modal" className="cursor-pointer">
+                        <i className="fa-solid fa-clock-rotate-left"></i>
+                    </label>
+                </div> : null}
+                <input type="checkbox" id="real-history-modal" className="modal-toggle" />
+                <label htmlFor="real-history-modal" className="modal cursor-pointer">
+                    <label className="modal-box relative" htmlFor="">
+                        {goodImages.real?.map(({ url, _id }) => (
+                            <div key={_id} className="flex flex-col">
+                                <img src={url} alt="Real" className="aspect-[3/2] mt-4 w-[95%] m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] pb-5" />
+                                <div className="flex gap-3">
+                                    <button
+                                        type="button"
+                                        className="flex-auto btn btn-error"
+                                        onClick={() => deleteGoodImage('real', _id)}
+                                    >
+                                        Delete
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="flex-auto btn btn-success"
+                                        onClick={() => selectGoodImage('real', _id)}
+                                    >
+                                        Use
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </label>
+                </label>
                 {'Real ' + (keyword || 'Owl')}
             </div>
 
             <figure className="shrink basis-1/2">
                 {INITIAL_OVERRIDES[keyword]?.real || ((real || goodImages.real?.[0].url) && keyword) ? <img
-                    src={goodImages.real?.[0].url || INITIAL_OVERRIDES[keyword]?.real || real}
+                    src={realURL}
                     alt="Real"
                     className={`aspect-[3/2] mt-4 ${showingRealForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     xmlns="http://placekitten.com/200/300"
@@ -40,6 +80,15 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingRealForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>
                     <progress className="progress progress-info w-[92.5%] m-auto"></progress>
                 </>}
+                <button
+                    className={`btn btn-${isRealURLGood ? 'primary' : 'secondary'} tooltip tooltip-left float-right mt-5 mr-5`}
+                    data-tip={isRealURLGood ? "Click to delete image" : "Click to mark image good"}
+                    onClick={() => isRealURLGood
+                        ? deleteGoodImage('real', goodImages.real?.[0]._id)
+                        : addGoodImage('real', { imageURL: realURL })}
+                >
+                    <i className="fa-solid fa-heart"></i>
+                </button>
             </figure>
             <div className="basis-3/12 card-body text-center">
                 {user && editingRealQuery ? (
@@ -74,37 +123,6 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         </div>
                         <div className="flex">
                             <input type="file" name="image" className="flex-1 w-[7.75vw] m-1 file-input file-input-bordered" />
-
-                            <label htmlFor="real-history-modal" className="flex-1 w-[2.5vw] btn btn-secondary ml-5">
-                                <i className="fa-solid fa-clock-rotate-left"></i>
-                            </label>
-                            <input type="checkbox" id="real-history-modal" className="modal-toggle" />
-                            <label htmlFor="real-history-modal" className="modal cursor-pointer">
-                                <label className="modal-box relative" htmlFor="">
-                                    {goodImages.real?.map(({ url, _id }) => (
-                                        <div key={_id} className="flex flex-col">
-                                            <img src={url} alt="Real" className="aspect-[3/2] mt-4 w-[95%] m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] pb-5" />
-                                            <div className="flex gap-3">
-                                                <button
-                                                    type="button"
-                                                    className="flex-auto btn btn-error"
-                                                    onClick={() => deleteGoodImage('real', _id)}
-                                                >
-                                                    Delete
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    className="flex-auto btn btn-success"
-                                                    onClick={() => selectGoodImage('real', _id)}
-                                                >
-                                                    Use
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </label>
-                            </label>
-
                             <button type="submit" className="flex-1 w-[7.75vw] btn btn-secondary ml-5">Submit</button>
                         </div>
                         <br></br>
@@ -173,7 +191,38 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
             </div>
         </div>
         <div className="flex flex-col max-h-max w-80 md:w-96 bg-base-100 min-h-[62.5vh] shadow-xl flex-auto border-2 border-[#ffffff50]">
-            <div className="basis-0 text-center font-bold pt-4 text-2xl text-white">
+            <div className="basis-0 text-center font-bold pt-4 text-2xl text-white relative">
+                {goodImages.cartoon?.length ? <div className="tooltip tooltip-right absolute top-5 left-5" data-tip="Click to change image">
+                    <label htmlFor="real-history-modal" className="cursor-pointer">
+                        <i className="fa-solid fa-clock-rotate-left"></i>
+                    </label>
+                </div> : null}
+                <input type="checkbox" id="cartoon-history-modal" className="modal-toggle" />
+                <label htmlFor="cartoon-history-modal" className="modal cursor-pointer">
+                    <label className="modal-box relative" htmlFor="">
+                        {goodImages.cartoon?.map(({ url, _id }) => (
+                            <div key={_id} className="flex flex-col">
+                                <img src={url} alt="Cartoon" className="aspect-[3/2] mt-4 w-[95%] m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] pb-5" />
+                                <div className="flex gap-3">
+                                    <button
+                                        type="button"
+                                        className="flex-auto btn btn-error"
+                                        onClick={() => deleteGoodImage('cartoon', _id)}
+                                    >
+                                        Delete
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="flex-auto btn btn-success"
+                                        onClick={() => selectGoodImage('cartoon', _id)}
+                                    >
+                                        Use
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </label>
+                </label>
                 {'Cartoon ' + (keyword || 'Owl')}
             </div>
             <figure className="shrink basis-1/2">
@@ -186,6 +235,15 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     <svg className={`${keyword ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingCartoonForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>
                     <progress className="progress progress-info w-[92.5%] m-auto"></progress>
                 </>}
+                <button
+                    className={`btn btn-${isCartoonURLGood ? 'primary' : 'secondary'} tooltip tooltip-left float-right mt-5 mr-5`}
+                    data-tip={isCartoonURLGood ? "Click to delete image" : "Click to mark image good"}
+                    onClick={() => isCartoonURLGood
+                        ? deleteGoodImage('cartoon', goodImages.cartoon?.[0]._id)
+                        : addGoodImage('cartoon', { imageURL: cartoonURL })}
+                >
+                    <i className="fa-solid fa-heart"></i>
+                </button>
             </figure>
             <div className="basis-3/12 card-body text-center">
                 {showingCartoonForm ? (
@@ -220,36 +278,6 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         </div>
                         <div className="flex">
                             <input type="file" name="image" className="flex-1 w-[10vw] m-1 file-input file-input-bordered" />
-
-                            <label htmlFor="cartoon-history-modal" className="flex-1 w-[2.5vw] btn btn-secondary ml-5">
-                                <i className="fa-solid fa-clock-rotate-left"></i>
-                            </label>
-                            <input type="checkbox" id="cartoon-history-modal" className="modal-toggle" />
-                            <label htmlFor="cartoon-history-modal" className="modal cursor-pointer">
-                                <label className="modal-box relative" htmlFor="">
-                                    {goodImages.cartoon?.map(({ url, _id }) => (
-                                        <div key={_id} className="flex flex-col">
-                                            <img src={url} alt="Real" className="aspect-[3/2] mt-4 w-[95%] m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] pb-5" />
-                                            <div className="flex gap-3">
-                                                <button
-                                                    type="button"
-                                                    className="flex-auto btn btn-error"
-                                                    onClick={() => deleteGoodImage('cartoon', _id)}
-                                                >
-                                                    Delete
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    className="flex-auto btn btn-success"
-                                                    onClick={() => selectGoodImage('cartoon', _id)}
-                                                >
-                                                    Use
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </label>
-                            </label>
                             <button type="submit" className="flex-1 w-[10vw] btn btn-secondary ml-5">Submit</button>
                         </div>
                         <br></br>
@@ -320,9 +348,39 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
             </div>
         </div>
         <div className="flex flex-col max-h-max w-80 md:w-96 bg-base-100 min-h-[62.5vh] shadow-xl flex-auto border-2 border-[#ffffff50] ">
-            <div className="basis-0 text-center font-bold pt-4 text-2xl text-white">
+            <div className="basis-0 text-center font-bold pt-4 text-2xl text-white relative">
+                {goodImages.famous?.length ? <div className="tooltip tooltip-right absolute top-5 left-5" data-tip="Click to change image">
+                    <label htmlFor="famous-history-modal" className="cursor-pointer">
+                        <i className="fa-solid fa-clock-rotate-left"></i>
+                    </label>
+                </div> : null}
+                <input type="checkbox" id="famous-history-modal" className="modal-toggle" />
+                <label htmlFor="famous-history-modal" className="modal cursor-pointer">
+                    <label className="modal-box relative" htmlFor="">
+                        {goodImages.famous?.map(({ url, _id }) => (
+                            <div key={_id} className="flex flex-col">
+                                <img src={url} alt="Famous" className="aspect-[3/2] mt-4 w-[95%] m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] pb-5" />
+                                <div className="flex gap-3">
+                                    <button
+                                        type="button"
+                                        className="flex-auto btn btn-error"
+                                        onClick={() => deleteGoodImage('famous', _id)}
+                                    >
+                                        Delete
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="flex-auto btn btn-success"
+                                        onClick={() => selectGoodImage('famous', _id)}
+                                    >
+                                        Use
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </label>
+                </label>
                 {'Famous ' + (keyword || 'Owl')}
-
             </div>
             <figure className="shrink basis-1/2">
                 {INITIAL_OVERRIDES[keyword]?.famous || (((customQueries.famous && famous) || goodImages.famous?.[0].url) && keyword) ? <img
@@ -334,6 +392,15 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     <svg className={`${keyword && customQueries.famous ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingFamousForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>
                     {keyword && customQueries.famous ? <progress className="progress progress-info w-[92.5%] m-auto"></progress> : null}
                 </>}
+                <button
+                    className={`btn btn-${isFamousURLGood ? 'primary' : 'secondary'} tooltip tooltip-left float-right mt-5 mr-5`}
+                    data-tip={isFamousURLGood ? "Click to delete image" : "Click to mark image good"}
+                    onClick={() => isFamousURLGood
+                        ? deleteGoodImage('famous', goodImages.famous?.[0]._id)
+                        : addGoodImage('famous', { imageURL: famousURL })}
+                >
+                    <i className="fa-solid fa-heart"></i>
+                </button>
             </figure>
 
             <div className="basis-1/2 card-body text-center">
@@ -369,36 +436,6 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         </div>
                         <div className="flex">
                             <input type="file" name="image" className="flex-1 w-[10vw] m-1 file-input file-input-bordered" />
-
-                            <label htmlFor="famous-history-modal" className="flex-1 w-[2.5vw] btn btn-secondary ml-5">
-                                <i className="fa-solid fa-clock-rotate-left"></i>
-                            </label>
-                            <input type="checkbox" id="famous-history-modal" className="modal-toggle" />
-                            <label htmlFor="famous-history-modal" className="modal cursor-pointer">
-                                <label className="modal-box relative" htmlFor="">
-                                    {goodImages.famous?.map(({ url, _id }) => (
-                                        <div key={_id} className="flex flex-col">
-                                            <img src={url} alt="Real" className="aspect-[3/2] mt-4 w-[95%] m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] pb-5" />
-                                            <div className="flex gap-3">
-                                                <button
-                                                    type="button"
-                                                    className="flex-auto btn btn-error"
-                                                    onClick={() => deleteGoodImage('famous', _id)}
-                                                >
-                                                    Delete
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    className="flex-auto btn btn-success"
-                                                    onClick={() => selectGoodImage('famous', _id)}
-                                                >
-                                                    Use
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </label>
-                            </label>
                             <button type="submit" className="flex-1 w-[10vw] btn btn-secondary ml-5">Submit</button>
                         </div>
 
