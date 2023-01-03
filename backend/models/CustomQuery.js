@@ -9,19 +9,6 @@ const CustomQuerySchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    image: {
-        type: {
-            url: {
-                type: String,
-                required: true,
-            },
-            cloudinaryId: {
-                type: String,
-                required: false,
-            }
-        },
-        required: false,
-    },
     type: {
         type: String,
         required: true,

@@ -63,6 +63,56 @@ const useBadImages = () => {
   return [badImages, addBadImage, removeBadImage];
 };
 
+const useGoodImages = (query) => {
+  const [goodImages, setGoodImagesValues] = useState({});
+
+  useEffect(() => {
+    if (!query) return;
+    fetch(`/api/GoodImages/${query}`)
+      .then((response) => response.json())
+      .then((goodImages) => setGoodImagesValues(goodImages));
+  }, [query]);
+
+  const addGoodImage = async (type, { imageURL, image }) => {
+    const body = new FormData();
+    if (imageURL) body.append("imageURL", imageURL)
+    if (image) body.append("image", image);
+    body.append("type", type);
+
+    const response = await fetch("/api/GoodImages/" + query, {
+      method: "POST",
+      body
+    });
+    const dataJ = await response.json();
+    const newGoodImages = { ...goodImages };
+    if (newGoodImages[type]) {
+      newGoodImages[type] = [dataJ, ...newGoodImages[type]]
+    } else {
+      newGoodImages[type] = [dataJ];
+    }
+    setGoodImagesValues(newGoodImages);
+  };
+
+  const deleteGoodImage = async (type) => {
+    const goodImageID = goodImages[type][0]._id;
+    await fetch("/api/GoodImages/" + goodImageID, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+    });
+    const newGoodImages = { ...goodImages };
+    if (newGoodImages[type].length === 1) {
+      delete newGoodImages[type];
+    } else {
+      newGoodImages[type] = [...newGoodImages[type].slice(1)]
+    }
+    setGoodImagesValues(newGoodImages);
+  };
+
+  return [goodImages, addGoodImage, deleteGoodImage];
+}
+
 const useCustomQueries = (originalQuery) => {
   const [customQueries, setCustomQueriesValues] = useState({});
 
@@ -73,16 +123,13 @@ const useCustomQueries = (originalQuery) => {
       .then((customQueries) => setCustomQueriesValues(customQueries));
   }, [originalQuery]);
 
-  const setCustomQuery = async (type, { convertedQuery, imageURL, image }) => {
-    const body = new FormData();
-    if (imageURL) body.append("imageURL", imageURL)
-    if (convertedQuery) body.append("convertedQuery", convertedQuery);
-    if (image) body.append("image", image);
-    body.append("type", type);
-
+  const setCustomQuery = async (type, convertedQuery) => {
     const response = await fetch("/api/custom-query/" + originalQuery, {
       method: "POST",
-      body
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ type, convertedQuery }),
     });
     const dataJ = await response.json();
     const newCustomQueries = { ...customQueries };
@@ -178,6 +225,7 @@ export default function Api({ user }) {
   const [res, fetchRequestReal] = useRealApi();
   const [famousRes, fetchRequestFamous] = useFamousApi();
   const [customQueries, setCustomQuery, deleteCustomQuery] = useCustomQueries(query);
+  const [goodImages, addGoodImage, deleteGoodImage] = useGoodImages(query);
   const prevCustomQueries = usePrevious({}, customQueries);
   const [badImages, addBadImage, removeBadImage] = useBadImages();
   const prevBadImages = usePrevious([], badImages);
@@ -226,8 +274,8 @@ export default function Api({ user }) {
   const reRollButton = (url, type) => {
     addBadImage(url, type)
   };
-  const submitCustomQuery = (type, { convertedQuery, imageURL, image }) => {
-    if (convertedQuery || imageURL || image) return setCustomQuery(type, { convertedQuery, imageURL, image });
+  const submitCustomQuery = (type, convertedQuery) => {
+    if (convertedQuery) return setCustomQuery(type, convertedQuery);
     else return deleteCustomQuery(type);
   };
 
@@ -277,6 +325,8 @@ export default function Api({ user }) {
         user={user}
         showRerollDialog={showRerollDialog}
         setShowRerollDialog={setShowRerollDialog}
+        goodImages={goodImages}
+        addGoodImage={addGoodImage}
       />
     </div>
   );

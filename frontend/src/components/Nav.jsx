@@ -108,10 +108,6 @@ export default function Nav({ user, setUser }) {
                         Teaching people how to make these connections in the world allows them to better understand everything around them.
                     </p>
 
-
-
-
-
                     <div className="modal-action">
 
                         <label

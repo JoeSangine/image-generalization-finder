@@ -5,9 +5,11 @@ const passport = require("passport");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")
 const logger = require("morgan");
+
 const connectDB = require("./config/database");
 const mainRoutes = require("./routes/main");
 const BadImagesRouter = require("./routes/BadImagesRouter");
+const GoodImagesRouter = require("./routes/GoodImagesRouter");
 const CustomQueryRouter = require("./routes/CustomQueryRouter");
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
@@ -47,6 +49,7 @@ connectDB().then(conn => {
   //Setup Routes For Which The Server Is Listening
   app.use("/api/", mainRoutes);
   app.use("/api/BadImages", BadImagesRouter);
+  app.use("/api/GoodImages", GoodImagesRouter);
   app.use("/api/custom-query", CustomQueryRouter);
 
 

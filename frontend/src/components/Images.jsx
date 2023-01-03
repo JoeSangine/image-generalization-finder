@@ -14,7 +14,7 @@ const INITIAL_OVERRIDES = {
     },
 }
 
-export default function Images({ real, cartoon, famous, keyword = 'owl', badImages, addBadImage, undoBadImage, submitCustomQuery, customQueries, user, showRerollDialog, setShowRerollDialog }) {
+export default function Images({ real, cartoon, famous, keyword = 'owl', badImages, addBadImage, addGoodImage, undoBadImage, goodImages, submitCustomQuery, customQueries, user, showRerollDialog, setShowRerollDialog }) {
     const [editingRealQuery, setEditingRealQuery] = useState(false)
     const [editingCartoonQuery, setEditingCartoonQuery] = useState(false)
     const [editingFamousQuery, setEditingFamousQuery] = useState(false)
@@ -30,8 +30,8 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
             </div>
 
             <figure className="shrink basis-1/2">
-                {INITIAL_OVERRIDES[keyword]?.real || ((real || customQueries.real?.image?.url) && keyword) ? <img
-                    src={customQueries.real?.image?.url || INITIAL_OVERRIDES[keyword]?.real || real}
+                {INITIAL_OVERRIDES[keyword]?.real || ((real || goodImages.real?.[0].url) && keyword) ? <img
+                    src={goodImages.real?.[0].url || INITIAL_OVERRIDES[keyword]?.real || real}
                     alt="Real"
                     className={`aspect-[3/2] mt-4 ${showingRealForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     xmlns="http://placekitten.com/200/300"
@@ -50,7 +50,10 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                             const convertedQuery = form.elements.convertedQuery.value;
                             const imageURL = form.elements.imageURL.value;
                             const image = form.elements.image.files[0];
-                            return submitCustomQuery('real', { convertedQuery, imageURL, image })
+                            const promise = imageURL || image
+                                ? addGoodImage('real', { imageURL, image })
+                                : submitCustomQuery('real', convertedQuery);
+                            return promise
                                 .then(() => setEditingRealQuery(false));
                         }}
                         className="text-center"
@@ -144,8 +147,8 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 {'Cartoon ' + (keyword || 'Owl')}
             </div>
             <figure className="shrink basis-1/2">
-                {INITIAL_OVERRIDES[keyword]?.cartoon || ((cartoon || customQueries.cartoon?.image?.url) && keyword) ? <img
-                    src={customQueries.cartoon?.image?.url || INITIAL_OVERRIDES[keyword]?.cartoon || cartoon}
+                {INITIAL_OVERRIDES[keyword]?.cartoon || ((cartoon || goodImages.cartoon?.[0].url) && keyword) ? <img
+                    src={goodImages.cartoon?.[0].url || INITIAL_OVERRIDES[keyword]?.cartoon || cartoon}
                     className={`aspect-[3/2] mt-4 ${showingCartoonForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     alt="Cartoon"
                     onError={() => addBadImage(cartoon, 'cartoon')}
@@ -163,8 +166,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                             const convertedQuery = form.elements.convertedQuery.value;
                             const imageURL = form.elements.imageURL.value;
                             const image = form.elements.image.files[0];
-                            return submitCustomQuery('cartoon', { convertedQuery, imageURL, image })
-                                .then(() => setEditingCartoonQuery(false));
+                            const promise = imageURL || image
+                                ? addGoodImage('cartoon', { imageURL, image })
+                                : submitCustomQuery('cartoon', convertedQuery);
+                            return promise
+                                .then(() => setEditingRealQuery(false));
                         }}
                         className="text-center"
                     >
@@ -260,8 +266,8 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
 
             </div>
             <figure className="shrink basis-1/2">
-                {INITIAL_OVERRIDES[keyword]?.famous || (((customQueries.famous && famous) || customQueries.famous?.image?.url) && keyword) ? <img
-                    src={customQueries.famous?.image?.url || INITIAL_OVERRIDES[keyword]?.famous || famous}
+                {INITIAL_OVERRIDES[keyword]?.famous || (((customQueries.famous && famous) || goodImages.famous?.[0].url) && keyword) ? <img
+                    src={goodImages.famous?.[0].url || INITIAL_OVERRIDES[keyword]?.famous || famous}
                     alt="Famous"
                     className={`aspect-[3/2] mt-4 ${showingFamousForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     onError={() => addBadImage(famous, 'famous')}
@@ -280,8 +286,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                             const convertedQuery = form.elements.convertedQuery.value;
                             const imageURL = form.elements.imageURL.value;
                             const image = form.elements.image.files[0];
-                            return submitCustomQuery('famous', { convertedQuery, imageURL, image })
-                                .then(() => setEditingFamousQuery(false));
+                            const promise = imageURL || image
+                                ? addGoodImage('famous', { imageURL, image })
+                                : submitCustomQuery('famous', convertedQuery);
+                            return promise
+                                .then(() => setEditingRealQuery(false));
                         }}
                         className="text-center"
                     >
