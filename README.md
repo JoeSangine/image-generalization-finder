@@ -13,9 +13,7 @@ Tech used: HTML, CSS, JavaScript, React, Vite, Node.js, Express
 Optimizations
 <ul>
  <li> backend doesnt respond nav goes bye bye fix that  (can do last doesnt affect user just devs)</li>
- <li>user history</li>
  
- <li> settings widget to bring back rerolls after custom image uploaded aka history</li>
  <li> Blacklist image permanent button </li>
  <li>animation nation</li>
  <li> ADD GIF TO THIS README and improve description and readme in general </li>
