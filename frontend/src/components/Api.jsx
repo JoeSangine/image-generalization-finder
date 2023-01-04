@@ -2,8 +2,9 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import Images from "./Images";
 
-const fetchFromLaionAPI = async (query, options, page) => {
+const fetchFromLaionAPI = async (query, options, page, abortController) => {
   const response = await fetch("https://knn5.laion.ai/knn-service", {
+    signal: abortController.signal,
     "body": JSON.stringify({
       text: query,
       modality: "image",
@@ -170,11 +171,12 @@ const useCustomQueries = (originalQuery) => {
 
 const useFamousApi = () => {
   const [famousRes, famousSetRes] = useState([]);
-  const fetchRequestFamous = async (query, newBadImages) => {
+  const fetchRequestFamous = async (query, newBadImages, abortController) => {
     famousSetRes([]);
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
-      const allUrls = await fetchFromLaionAPI(query, {}, page);
+      const allUrls = await fetchFromLaionAPI(query, {}, page, abortController).catch(() => undefined);
+      if (abortController.signal.aborted) return;
       usedUrls = allUrls.filter((url) => {
         return !newBadImages.some((badImage) => {
           return badImage.BadURL === url;
@@ -188,11 +190,13 @@ const useFamousApi = () => {
 
 const useCartoonApi = () => {
   const [cartres, cartSetRes] = useState([]);
-  const fetchRequestCartoon = async (query, newBadImages) => {
+  const fetchRequestCartoon = async (query, newBadImages, abortController) => {
     cartSetRes([]);
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
-      const allUrls = await fetchFromLaionAPI(query, {}, page);
+      const allUrls = await fetchFromLaionAPI(query, {}, page, abortController).catch(() => undefined);
+      console.log('cartoon aborted', abortController.signal)
+      if (abortController.signal.aborted) return;
       usedUrls = allUrls.filter((url) => {
         return !newBadImages.some((badImage) => {
           return badImage.BadURL === url;
@@ -207,13 +211,12 @@ const useCartoonApi = () => {
 
 const useRealApi = () => {
   const [res, setRes] = useState([]);
-  const fetchRequestReal = async (query, newBadImages) => {
+  const fetchRequestReal = async (query, newBadImages, abortController) => {
     setRes([]);
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
-      const allUrls = await fetchFromLaionAPI(query, {
-        aesthetic_score: '5'
-      }, page);
+      const allUrls = await fetchFromLaionAPI(query, { aesthetic_score: '5' }, page, abortController).catch(() => undefined);
+      if (abortController.signal.aborted) return;
       usedUrls = allUrls.filter((url) => {
         return !newBadImages.some((badImage) => {
           return badImage.BadURL === url;
@@ -261,7 +264,11 @@ export default function Api({ user }) {
     if (!badImagesChanged && !customQueriesChanged && !queryChanged) return;
 
     const realQuery = customQueries.real?.convertedQuery || (query ? 'real ' + query : '');
-    if (realQuery) fetchRequestReal(realQuery, realBadImages);
+    if (realQuery) {
+      const abortController = new AbortController();
+      fetchRequestReal(realQuery, realBadImages, abortController);
+      return () => abortController.abort();
+    }
   }, [query, badImages, customQueries]);
   useEffect(() => {
     const cartoonBadImages = badImages.filter(bad => bad.type === 'cartoon');
@@ -272,7 +279,15 @@ export default function Api({ user }) {
     if (!badImagesChanged && !customQueriesChanged && !queryChanged) return;
 
     const cartoonQuery = customQueries.cartoon?.convertedQuery || (query ? 'clipart ' + query : '');
-    if (cartoonQuery) fetchRequestCartoon(cartoonQuery, cartoonBadImages);
+    if (cartoonQuery) {
+      const abortController = new AbortController();
+      console.log('fetching cartoon', cartoonQuery);
+      fetchRequestCartoon(cartoonQuery, cartoonBadImages, abortController);
+      return () => {
+        console.log('aborting cartoon', cartoonQuery);
+        abortController.abort();
+      }
+    }
   }, [query, badImages, customQueries])
   useEffect(() => {
     const famousBadImages = badImages.filter(bad => bad.type === 'famous');
@@ -282,8 +297,11 @@ export default function Api({ user }) {
     const queryChanged = query !== prevQuery;
     if (!badImagesChanged && !customQueriesChanged && !queryChanged) return;
 
-    if (customQueries.famous) fetchRequestFamous(customQueries.famous.convertedQuery, famousBadImages);
-    // TODO - clear when not famous or something?
+    if (customQueries.famous) {
+      const abortController = new AbortController();
+      fetchRequestFamous(customQueries.famous.convertedQuery, famousBadImages, abortController);
+      return () => abortController.abort();
+    }
   }, [badImages, customQueries.famous?.convertedQuery]);
 
   const reRollButton = (url, type) => {

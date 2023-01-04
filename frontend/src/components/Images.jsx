@@ -168,7 +168,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                             </div>
                         </label>
                     </label>
-                    <div class="flex pl-12 px-5 pr-4 gap-5 text-center max-w-[95%]">
+                    <div className="flex pl-12 px-5 pr-4 gap-5 text-center max-w-[95%]">
                         <label
                             htmlFor="my-modalReroll1"
                             className="flex-auto btn w-[50%] btn-primary text-white"
@@ -195,8 +195,8 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 </h2>
                 }
                 <div className="card-actions justify-end">
-                    <div class="tooltip tooltip-left" data-tip="Click Widget Here To Add Custom Input">
-                        <i class="fa-solid fa-gear cursor-pointer" onClick={() => setEditingRealQuery(p => !p)}></i>
+                    <div className="tooltip tooltip-left" data-tip="Click Widget Here To Add Custom Input">
+                        <i className="fa-solid fa-gear cursor-pointer" onClick={() => setEditingRealQuery(p => !p)}></i>
                     </div>
                 </div>
             </div>
@@ -330,7 +330,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                             </div>
                         </label>
                     </label>
-                    <div class="flex pl-12 px-5 pr-4 gap-5 text-center max-w-[95%]">
+                    <div className="flex pl-12 px-5 pr-4 gap-5 text-center max-w-[95%]">
                         <label
                             htmlFor="my-modalReroll2"
                             onClick={(e) => {
@@ -354,8 +354,8 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 </h2>
                 }
                 <div className="card-actions justify-end">
-                    <div class="tooltip tooltip-left" data-tip="Click Widget Here To Add Custom Input">
-                        <i class="fa-solid fa-gear cursor-pointer" onClick={() => setEditingCartoonQuery(p => !p)}></i>
+                    <div className="tooltip tooltip-left" data-tip="Click Widget Here To Add Custom Input">
+                        <i className="fa-solid fa-gear cursor-pointer" onClick={() => setEditingCartoonQuery(p => !p)}></i>
                     </div>
                 </div>
             </div>
@@ -489,7 +489,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                                 </div>
                             </label>
                         </label>
-                        <div class="flex pl-12 px-5 pr-4 gap-5 text-center max-w-[95%]">
+                        <div className="flex pl-12 px-5 pr-4 gap-5 text-center max-w-[95%]">
                             <label
                                 htmlFor="my-modalReroll3"
                                 className="flex-auto btn w-[50%] btn-primary text-white"
@@ -511,8 +511,8 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 }
 
                 <div className="card-actions justify-end">
-                    <div class="tooltip tooltip-left" data-tip="Click Widget Here To Add Custom Input">
-                        <i class="fa-solid fa-gear cursor-pointer" onClick={() => setEditingFamousQuery(p => !p)}></i>
+                    <div className="tooltip tooltip-left" data-tip="Click Widget Here To Add Custom Input">
+                        <i className="fa-solid fa-gear cursor-pointer" onClick={() => setEditingFamousQuery(p => !p)}></i>
                     </div>
                 </div>
             </div>
