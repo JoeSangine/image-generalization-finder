@@ -9,13 +9,17 @@ const GoodImageSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    selected: {
+        type: Boolean,
+        required: false,
+    },
     url: {
-            type: String,
-            required: true,
+        type: String,
+        required: true,
     },
     cloudinaryId: {
-            type: String,
-            required: false,
+        type: String,
+        required: false,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,

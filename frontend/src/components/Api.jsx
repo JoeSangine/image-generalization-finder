@@ -112,17 +112,20 @@ const useGoodImages = (query) => {
   };
 
   const selectGoodImage = async (type, id) => {
-    const goodImageIndex = goodImages[type].findIndex(goodImage => goodImage._id === id)
-    const response = await fetch("/api/GoodImages/select/" + id);
-    const newGoodImage = await response.json();
+    await fetch("/api/GoodImages/select/" + id);
     const newGoodImages = { ...goodImages };
-    newGoodImages[type] = [...newGoodImages[type]]
-    newGoodImages[type].splice(goodImageIndex, 1)
-    newGoodImages[type].unshift(newGoodImage);
+    newGoodImages[type] = newGoodImages[type].map(img => ({ ...img, selected: img._id === id }));
     setGoodImagesValues(newGoodImages);
   }
 
-  return [goodImages, addGoodImage, deleteGoodImage, selectGoodImage];
+  const unselectGoodImage = async (type, id) => {
+    await fetch("/api/GoodImages/unselect/" + id);
+    const newGoodImages = { ...goodImages };
+    newGoodImages[type] = newGoodImages[type].map(img => ({ ...img, selected: false }));
+    setGoodImagesValues(newGoodImages);
+  }
+
+  return [goodImages, addGoodImage, deleteGoodImage, selectGoodImage, unselectGoodImage];
 }
 
 const useCustomQueries = (originalQuery) => {
@@ -237,7 +240,7 @@ export default function Api({ user }) {
   const [res, fetchRequestReal] = useRealApi();
   const [famousRes, fetchRequestFamous] = useFamousApi();
   const [customQueries, setCustomQuery, deleteCustomQuery] = useCustomQueries(query);
-  const [goodImages, addGoodImage, deleteGoodImage, selectGoodImage] = useGoodImages(query);
+  const [goodImages, addGoodImage, deleteGoodImage, selectGoodImage, unselectGoodImage] = useGoodImages(query);
   const prevCustomQueries = usePrevious({}, customQueries);
   const [badImages, addBadImage, removeBadImage] = useBadImages();
   const prevBadImages = usePrevious([], badImages);
@@ -341,6 +344,7 @@ export default function Api({ user }) {
         addGoodImage={addGoodImage}
         deleteGoodImage={deleteGoodImage}
         selectGoodImage={selectGoodImage}
+        unselectGoodImage={unselectGoodImage}
       />
     </div>
   );

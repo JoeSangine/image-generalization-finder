@@ -54,17 +54,34 @@ module.exports = {
     },
     selectGoodImage: async (req, res) => {
         try {
-            const updatedGoodImage = await GoodImage
-                .findOneAndUpdate(
-                    { _id: req.params.id, user: req.user?.id },
-                    { $set: { updatedAt: Date.now() } },
-                    { new: true }
-                );
-            res.json(updatedGoodImage);
+            const goodImage = await GoodImage.findOneAndUpdate({
+                _id: req.params.id,
+                user: req.user?.id,
+            }, { selected: true }, { new: true });
+            await GoodImage.updateMany(
+                {
+                    query: goodImage.query,
+                    type: goodImage.type,
+                    user: req.user?.id,
+                },
+                { selected: false }
+            );
+            res.status(200).end();
         } catch (err) {
             console.log(err);
         }
     },
+    unselectGoodImage: async (req, res) => {
+        try {
+            await GoodImage.updateOne({
+                _id: req.params.id,
+                user: req.user?.id,
+            }, { selected: false });
+            res.status(200).end();
+        } catch (err) {
+            console.log(err);
+        }
+    }
 };
 
 

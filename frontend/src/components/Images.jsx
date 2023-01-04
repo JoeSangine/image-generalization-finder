@@ -14,7 +14,7 @@ const INITIAL_OVERRIDES = {
     },
 }
 
-export default function Images({ real, cartoon, famous, keyword = 'owl', badImages, addBadImage, addGoodImage, deleteGoodImage, selectGoodImage, undoBadImage, goodImages, submitCustomQuery, customQueries, user, showRerollDialog, setShowRerollDialog }) {
+export default function Images({ real, cartoon, famous, keyword = 'owl', badImages, addBadImage, addGoodImage, deleteGoodImage, selectGoodImage, unselectGoodImage, undoBadImage, goodImages, submitCustomQuery, customQueries, user, showRerollDialog, setShowRerollDialog }) {
     const [editingRealQuery, setEditingRealQuery] = useState(false)
     const [editingCartoonQuery, setEditingCartoonQuery] = useState(false)
     const [editingFamousQuery, setEditingFamousQuery] = useState(false)
@@ -23,13 +23,16 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
     const showingCartoonForm = user && editingCartoonQuery
     const showingFamousForm = user && (!customQueries.famous || editingFamousQuery)
 
-    const realURL = goodImages.real?.[0].url || INITIAL_OVERRIDES[keyword]?.real || real;
+    const selectedRealImage = goodImages.real?.find(img => img.selected);
+    const realURL = selectedRealImage?.url || INITIAL_OVERRIDES[keyword]?.real || real;
     const isRealURLGood = goodImages.real?.some(good => good.url === realURL);
 
-    const cartoonURL = goodImages.cartoon?.[0].url || INITIAL_OVERRIDES[keyword]?.cartoon || cartoon;
+    const selectedCartoonImage = goodImages.cartoon?.find(img => img.selected);
+    const cartoonURL = selectedCartoonImage?.url || INITIAL_OVERRIDES[keyword]?.cartoon || cartoon;
     const isCartoonURLGood = goodImages.cartoon?.some(good => good.url === cartoonURL);
 
-    const famousURL = goodImages.famous?.[0].url || INITIAL_OVERRIDES[keyword]?.famous || famous;
+    const selectedFamousImage = goodImages.famous?.find(img => img.selected);
+    const famousURL = selectedFamousImage?.url || INITIAL_OVERRIDES[keyword]?.famous || famous;
     const isFamousURLGood = goodImages.famous?.some(good => good.url === famousURL);
     return <div className='flex m-4 rounded-lg gap-8 flex-col xl:flex-row items-center pb-[12.5vh] xl:pb-0 xl:h-[75vh]'>
 
@@ -43,7 +46,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 <input type="checkbox" id="real-history-modal" className="modal-toggle" />
                 <label htmlFor="real-history-modal" className="modal cursor-pointer">
                     <label className="modal-box relative" htmlFor="">
-                        {goodImages.real?.map(({ url, _id }) => (
+                        {goodImages.real?.map(({ _id, url, selected }) => (
                             <div key={_id} className="flex flex-col">
                                 <img src={url} alt="Real" className="aspect-[3/2] mt-4 w-[95%] m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] pb-5" />
                                 <div className="flex gap-3">
@@ -54,13 +57,15 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                                     >
                                         Delete
                                     </button>
-                                    <button
-                                        type="button"
-                                        className="flex-auto btn btn-success"
-                                        onClick={() => selectGoodImage('real', _id)}
-                                    >
-                                        Use
-                                    </button>
+                                    {!selected &&
+                                        <button
+                                            type="button"
+                                            className="flex-auto btn btn-success"
+                                            onClick={() => selectGoodImage('real', _id)}
+                                        >
+                                            Use
+                                        </button>
+                                    }
                                 </div>
                             </div>
                         ))}
@@ -70,7 +75,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
             </div>
 
             <figure className="shrink basis-1/2">
-                {INITIAL_OVERRIDES[keyword]?.real || ((real || goodImages.real?.[0].url) && keyword) ? <img
+                {INITIAL_OVERRIDES[keyword]?.real || ((real || selectedRealImage?.url) && keyword) ? <img
                     src={realURL}
                     alt="Real"
                     className={`aspect-[3/2] mt-4 ${showingRealForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
@@ -83,9 +88,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 <button
                     className={`btn btn-${isRealURLGood ? 'primary' : 'secondary'} tooltip tooltip-left float-right mt-5 mr-5`}
                     data-tip={isRealURLGood ? "Click to delete image" : "Click to mark image good"}
-                    onClick={() => isRealURLGood
-                        ? deleteGoodImage('real', goodImages.real?.[0]._id)
-                        : addGoodImage('real', { imageURL: realURL })}
+                    onClick={() => {
+                        isRealURLGood
+                            ? deleteGoodImage('real', goodImages.real.find(good => good.url === realURL)._id)
+                            : addGoodImage('real', { imageURL: realURL })
+                    }}
                 >
                     <i className="fa-solid fa-heart"></i>
                 </button>
@@ -168,7 +175,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                             onClick={(e) => {
                                 if (!showRerollDialog) {
                                     e.preventDefault()
-                                    addBadImage(real, 'real')
+                                    if (selectedRealImage?.url === realURL) {
+                                        unselectGoodImage('real', selectedRealImage._id)
+                                    } else {
+                                        addBadImage(real, 'real')
+                                    }
                                 }
                             }}
                             disabled={!keyword}
@@ -200,7 +211,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 <input type="checkbox" id="cartoon-history-modal" className="modal-toggle" />
                 <label htmlFor="cartoon-history-modal" className="modal cursor-pointer">
                     <label className="modal-box relative" htmlFor="">
-                        {goodImages.cartoon?.map(({ url, _id }) => (
+                        {goodImages.cartoon?.map(({ _id, url, selected }) => (
                             <div key={_id} className="flex flex-col">
                                 <img src={url} alt="Cartoon" className="aspect-[3/2] mt-4 w-[95%] m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] pb-5" />
                                 <div className="flex gap-3">
@@ -211,13 +222,15 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                                     >
                                         Delete
                                     </button>
-                                    <button
-                                        type="button"
-                                        className="flex-auto btn btn-success"
-                                        onClick={() => selectGoodImage('cartoon', _id)}
-                                    >
-                                        Use
-                                    </button>
+                                    {!selected &&
+                                        <button
+                                            type="button"
+                                            className="flex-auto btn btn-success"
+                                            onClick={() => selectGoodImage('cartoon', _id)}
+                                        >
+                                            Use
+                                        </button>
+                                    }
                                 </div>
                             </div>
                         ))}
@@ -239,7 +252,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     className={`btn btn-${isCartoonURLGood ? 'primary' : 'secondary'} tooltip tooltip-left float-right mt-5 mr-5`}
                     data-tip={isCartoonURLGood ? "Click to delete image" : "Click to mark image good"}
                     onClick={() => isCartoonURLGood
-                        ? deleteGoodImage('cartoon', goodImages.cartoon?.[0]._id)
+                        ? deleteGoodImage('cartoon', goodImages.cartoon.find(good => good.url === cartoon)._id)
                         : addGoodImage('cartoon', { imageURL: cartoonURL })}
                 >
                     <i className="fa-solid fa-heart"></i>
@@ -357,7 +370,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 <input type="checkbox" id="famous-history-modal" className="modal-toggle" />
                 <label htmlFor="famous-history-modal" className="modal cursor-pointer">
                     <label className="modal-box relative" htmlFor="">
-                        {goodImages.famous?.map(({ url, _id }) => (
+                        {goodImages.famous?.map(({ _id, url, selected }) => (
                             <div key={_id} className="flex flex-col">
                                 <img src={url} alt="Famous" className="aspect-[3/2] mt-4 w-[95%] m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)] pb-5" />
                                 <div className="flex gap-3">
@@ -368,13 +381,15 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                                     >
                                         Delete
                                     </button>
-                                    <button
-                                        type="button"
-                                        className="flex-auto btn btn-success"
-                                        onClick={() => selectGoodImage('famous', _id)}
-                                    >
-                                        Use
-                                    </button>
+                                    {!selected &&
+                                        <button
+                                            type="button"
+                                            className="flex-auto btn btn-success"
+                                            onClick={() => selectGoodImage('famous', _id)}
+                                        >
+                                            Use
+                                        </button>
+                                    }
                                 </div>
                             </div>
                         ))}
@@ -396,7 +411,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     className={`btn btn-${isFamousURLGood ? 'primary' : 'secondary'} tooltip tooltip-left float-right mt-5 mr-5`}
                     data-tip={isFamousURLGood ? "Click to delete image" : "Click to mark image good"}
                     onClick={() => isFamousURLGood
-                        ? deleteGoodImage('famous', goodImages.famous?.[0]._id)
+                        ? deleteGoodImage('famous', goodImages.famous.find(good => good.url === famousURL)._id)
                         : addGoodImage('famous', { imageURL: famousURL })}
                 >
                     <i className="fa-solid fa-heart"></i>
