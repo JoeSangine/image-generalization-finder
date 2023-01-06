@@ -98,7 +98,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 </button>
             </figure>
             <div className="basis-3/12 card-body text-center">
-                {user && editingRealQuery ? (
+                {showingRealForm ? (
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
@@ -204,7 +204,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
         <div className="flex flex-col max-h-max w-80 md:w-96 bg-base-100 min-h-[62.5vh] shadow-xl flex-auto border-2 border-[#ffffff50]">
             <div className="basis-0 text-center font-bold pt-4 text-2xl text-white relative">
                 {goodImages.cartoon?.length ? <div className="tooltip tooltip-right absolute top-5 left-5" data-tip="Click to change image">
-                    <label htmlFor="real-history-modal" className="cursor-pointer">
+                    <label htmlFor="cartoon-history-modal" className="cursor-pointer">
                         <i className="fa-solid fa-clock-rotate-left"></i>
                     </label>
                 </div> : null}
@@ -239,8 +239,8 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 {'Cartoon ' + (keyword || 'Owl')}
             </div>
             <figure className="shrink basis-1/2">
-                {INITIAL_OVERRIDES[keyword]?.cartoon || ((cartoon || goodImages.cartoon?.[0].url) && keyword) ? <img
-                    src={goodImages.cartoon?.[0].url || INITIAL_OVERRIDES[keyword]?.cartoon || cartoon}
+                {INITIAL_OVERRIDES[keyword]?.cartoon || ((cartoon || selectedRealImage?.url) && keyword) ? <img
+                    src={cartoonURL}
                     className={`aspect-[3/2] mt-4 ${showingCartoonForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     alt="Cartoon"
                     onError={() => addBadImage(cartoon, 'cartoon')}
@@ -252,7 +252,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     className={`btn btn-${isCartoonURLGood ? 'primary' : 'secondary'} tooltip tooltip-left float-right mt-5 mr-5`}
                     data-tip={isCartoonURLGood ? "Click to delete image" : "Click to mark image good"}
                     onClick={() => isCartoonURLGood
-                        ? deleteGoodImage('cartoon', goodImages.cartoon.find(good => good.url === cartoon)._id)
+                        ? deleteGoodImage('cartoon', goodImages.cartoon.find(good => good.url === cartoonURL)._id)
                         : addGoodImage('cartoon', { imageURL: cartoonURL })}
                 >
                     <i className="fa-solid fa-heart"></i>
@@ -271,7 +271,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                                 ? addGoodImage('cartoon', { imageURL, image })
                                 : submitCustomQuery('cartoon', convertedQuery);
                             return promise
-                                .then(() => setEditingRealQuery(false));
+                                .then(() => setEditingCartoonQuery(false));
                         }}
                         className="text-center"
                     >
@@ -317,7 +317,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                                     <input type="checkbox" checked={showRerollDialog} className="checkbox" onChange={(e) => setShowRerollDialog(e.currentTarget.checked)} />
                                 </label>
                                 {/* reroll button */}
-                                <label htmlFor="my-modalReroll1" onClick={() => addBadImage(cartoon, 'cartoon')}
+                                <label htmlFor="my-modalReroll2" onClick={() => addBadImage(cartoon, 'cartoon')}
                                     className="btn btn-primary text-white">
                                     REROLL
                                 </label>
@@ -336,7 +336,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                             onClick={(e) => {
                                 if (!showRerollDialog) {
                                     e.preventDefault()
-                                    addBadImage(cartoon, 'cartoon')
+                                    if (selectedCartoonImage?.url === cartoonURL) {
+                                        unselectGoodImage('cartoon', selectedCartoonImage._id)
+                                    } else {
+                                        addBadImage(cartoon, 'cartoon')
+                                    }
                                 }
                             }}
                             disabled={!keyword}
@@ -398,8 +402,8 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 {'Famous ' + (keyword || 'Owl')}
             </div>
             <figure className="shrink basis-1/2">
-                {INITIAL_OVERRIDES[keyword]?.famous || (((customQueries.famous && famous) || goodImages.famous?.[0].url) && keyword) ? <img
-                    src={goodImages.famous?.[0].url || INITIAL_OVERRIDES[keyword]?.famous || famous}
+                {INITIAL_OVERRIDES[keyword]?.famous || (((customQueries.famous && famous) || selectedFamousImage?.url) && keyword) ? <img
+                    src={famousURL}
                     alt="Famous"
                     className={`aspect-[3/2] mt-4 ${showingFamousForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     onError={() => addBadImage(famous, 'famous')}
@@ -419,7 +423,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
             </figure>
 
             <div className="basis-1/2 card-body text-center">
-                {user && (!customQueries.famous || editingFamousQuery) ? (
+                {showingFamousForm ? (
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
@@ -431,7 +435,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                                 ? addGoodImage('famous', { imageURL, image })
                                 : submitCustomQuery('famous', convertedQuery);
                             return promise
-                                .then(() => setEditingRealQuery(false));
+                                .then(() => setEditingFamousQuery(false));
                         }}
                         className="text-center"
                     >
@@ -496,7 +500,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                                 onClick={(e) => {
                                     if (!showRerollDialog) {
                                         e.preventDefault()
-                                        addBadImage(famous, 'famous')
+                                        if (selectedFamousImage?.url === famousURL) {
+                                            unselectGoodImage('famous', selectedFamousImage._id)
+                                        } else {
+                                            addBadImage(famous, 'famous')
+                                        }
                                     }
                                 }}
                                 disabled={!keyword}>

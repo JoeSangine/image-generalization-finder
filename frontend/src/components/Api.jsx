@@ -170,9 +170,10 @@ const useCustomQueries = (originalQuery) => {
 };
 
 const useFamousApi = () => {
+  const [hasImages, setHasImages] = useState(false);
   const [famousRes, famousSetRes] = useState([]);
   const fetchRequestFamous = async (query, newBadImages, abortController) => {
-    famousSetRes([]);
+    setHasImages(false);
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
       const allUrls = await fetchFromLaionAPI(query, {}, page, abortController).catch(() => undefined);
@@ -184,14 +185,16 @@ const useFamousApi = () => {
       });
     }
     famousSetRes(usedUrls);
+    setHasImages(true);
   };
-  return [famousRes, fetchRequestFamous];
+  return [hasImages, famousRes, fetchRequestFamous];
 };
 
 const useCartoonApi = () => {
+  const [hasImages, setHasImages] = useState(false);
   const [cartres, cartSetRes] = useState([]);
   const fetchRequestCartoon = async (query, newBadImages, abortController) => {
-    cartSetRes([]);
+    setHasImages(false);
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
       const allUrls = await fetchFromLaionAPI(query, {}, page, abortController).catch(() => undefined);
@@ -205,14 +208,16 @@ const useCartoonApi = () => {
     }
     // should be good now +1
     cartSetRes(usedUrls);
+    setHasImages(true);
   };
-  return [cartres, fetchRequestCartoon];
+  return [hasImages, cartres, fetchRequestCartoon];
 };
 
 const useRealApi = () => {
+  const [hasImages, setHasImages] = useState(false);
   const [res, setRes] = useState([]);
   const fetchRequestReal = async (query, newBadImages, abortController) => {
-    setRes([]);
+    setHasImages(false);
     let usedUrls = [];
     for (let page = 1; usedUrls.length === 0; page++) {
       const allUrls = await fetchFromLaionAPI(query, { aesthetic_score: '5' }, page, abortController).catch(() => undefined);
@@ -224,8 +229,9 @@ const useRealApi = () => {
       });
     }
     setRes(usedUrls);
+    setHasImages(true);
   };
-  return [res, fetchRequestReal];
+  return [hasImages, res, fetchRequestReal];
 };
 
 function usePrevious(initial, value) {
@@ -239,9 +245,9 @@ function usePrevious(initial, value) {
 export default function Api({ user }) {
   const [query, setQuery] = useState("");
   const prevQuery = usePrevious('', query);
-  const [cartres, fetchRequestCartoon] = useCartoonApi();
-  const [res, fetchRequestReal] = useRealApi();
-  const [famousRes, fetchRequestFamous] = useFamousApi();
+  const [hasCartoon, cartres, fetchRequestCartoon] = useCartoonApi();
+  const [hasReal, res, fetchRequestReal] = useRealApi();
+  const [hasFamous, famousRes, fetchRequestFamous] = useFamousApi();
   const [customQueries, setCustomQuery, deleteCustomQuery] = useCustomQueries(query);
   const [goodImages, addGoodImage, deleteGoodImage, selectGoodImage, unselectGoodImage] = useGoodImages(query);
   const prevCustomQueries = usePrevious({}, customQueries);
@@ -261,7 +267,7 @@ export default function Api({ user }) {
     const badImagesChanged = realBadImages.length !== oldRealBadImages.length;
     const customQueriesChanged = customQueries.real?.convertedQuery !== prevCustomQueries.real?.convertedQuery;
     const queryChanged = query !== prevQuery;
-    if (!badImagesChanged && !customQueriesChanged && !queryChanged) return;
+    if (hasReal && !badImagesChanged && !customQueriesChanged && !queryChanged) return;
 
     const realQuery = customQueries.real?.convertedQuery || (query ? 'real ' + query : '');
     if (realQuery) {
@@ -269,14 +275,16 @@ export default function Api({ user }) {
       fetchRequestReal(realQuery, realBadImages, abortController);
       return () => abortController.abort();
     }
-  }, [query, badImages, customQueries]);
+  }, [hasReal, query, badImages, customQueries]);
+
   useEffect(() => {
     const cartoonBadImages = badImages.filter(bad => bad.type === 'cartoon');
     const oldCartoonBadImages = prevBadImages.filter(bad => bad.type === 'cartoon');
     const badImagesChanged = cartoonBadImages.length !== oldCartoonBadImages.length;
     const customQueriesChanged = customQueries.cartoon?.convertedQuery !== prevCustomQueries.cartoon?.convertedQuery;
     const queryChanged = query !== prevQuery;
-    if (!badImagesChanged && !customQueriesChanged && !queryChanged) return;
+
+    if (hasCartoon && !badImagesChanged && !customQueriesChanged && !queryChanged) return;
 
     const cartoonQuery = customQueries.cartoon?.convertedQuery || (query ? 'clipart ' + query : '');
     if (cartoonQuery) {
@@ -288,21 +296,22 @@ export default function Api({ user }) {
         abortController.abort();
       }
     }
-  }, [query, badImages, customQueries])
+  }, [hasCartoon, query, badImages, customQueries])
+
   useEffect(() => {
     const famousBadImages = badImages.filter(bad => bad.type === 'famous');
     const oldFamousBadImages = prevBadImages.filter(bad => bad.type === 'famous');
     const badImagesChanged = famousBadImages.length !== oldFamousBadImages.length;
     const customQueriesChanged = customQueries.famous?.convertedQuery !== prevCustomQueries.famous?.convertedQuery;
     const queryChanged = query !== prevQuery;
-    if (!badImagesChanged && !customQueriesChanged && !queryChanged) return;
+    if (hasFamous && !badImagesChanged && !customQueriesChanged && !queryChanged) return;
 
     if (customQueries.famous) {
       const abortController = new AbortController();
       fetchRequestFamous(customQueries.famous.convertedQuery, famousBadImages, abortController);
       return () => abortController.abort();
     }
-  }, [badImages, customQueries.famous?.convertedQuery]);
+  }, [hasFamous, badImages, customQueries.famous?.convertedQuery]);
 
   const reRollButton = (url, type) => {
     addBadImage(url, type)
