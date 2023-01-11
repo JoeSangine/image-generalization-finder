@@ -86,7 +86,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     <progress className="progress progress-info w-[92.5%] m-auto"></progress>
                 </>}
                 <button
-                    className={`btn btn-${isRealURLGood ? 'primary' : 'secondary'} tooltip tooltip-left float-left mt-5 ml-5 w-12 h-4`}
+                    className={`btn btn-${isRealURLGood ? 'primary' : 'secondary'} tooltip tooltip-right float-left mt-5 ml-5 w-12 h-4`}
                     data-tip={isRealURLGood ? "Click to delete image" : "Click to mark image good"}
                     onClick={() => {
                         isRealURLGood
@@ -96,7 +96,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 >
                     <i className="fa-solid fa-heart"></i>
                 </button>
-                <input type="checkbox" checked={printingImages.includes(realURL)} onChange={() => handleImagePrintCheck(realURL)} className="btn checkbox float-right mt-5 mr-5 w-12 h-4" />
+                <input type="checkbox" checked={printingImages.includes(realURL)} onChange={() => handleImagePrintCheck(realURL)} data-tip="Check to mark for printing" className="tooltip tooltip-left btn checkbox float-right mt-5 mr-5 w-12 h-4" />
             </figure>
             <div className="basis-3/12 card-body text-center">
                 {showingRealForm ? (
@@ -250,7 +250,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     <progress className="progress progress-info w-[92.5%] m-auto"></progress>
                 </>}
                 <button
-                    className={`btn btn-${isCartoonURLGood ? 'primary' : 'secondary'} tooltip tooltip-left float-left mt-5 ml-5 w-12 h-4`}
+                    className={`btn btn-${isCartoonURLGood ? 'primary' : 'secondary'} tooltip tooltip-right float-left mt-5 ml-5 w-12 h-4`}
                     data-tip={isCartoonURLGood ? "Click to delete image" : "Click to mark image good"}
                     onClick={() => isCartoonURLGood
                         ? deleteGoodImage('cartoon', goodImages.cartoon.find(good => good.url === cartoonURL)._id)
@@ -258,7 +258,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 >
                     <i className="fa-solid fa-heart"></i>
                 </button>
-                <input type="checkbox" checked={printingImages.includes(cartoonURL)} onChange={() => handleImagePrintCheck(cartoonURL)} className="btn checkbox float-right mt-5 mr-5 w-12 h-4" />
+                <input type="checkbox" checked={printingImages.includes(cartoonURL)} onChange={() => handleImagePrintCheck(cartoonURL)} data-tip="Check to mark for printing" className="btn checkbox tooltip tooltip-left float-right mt-5 mr-5 w-12 h-4" />
             </figure>
             <div className="basis-3/12 card-body text-center">
                 {showingCartoonForm ? (
@@ -413,9 +413,8 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     <svg className={`${keyword && customQueries.famous ? 'animate-pulse' : ''} aspect-[3/2] mt-4 ${showingFamousForm ? 'w-[75%]' : 'w-[95%]'} rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`} xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" viewBox="0 0 640 512"><path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" /></svg>
                     {keyword && customQueries.famous ? <progress className="progress progress-info w-[92.5%] m-auto"></progress> : null}
                 </>}
-                <input type="checkbox" checked={printingImages.includes(famousURL)} onChange={() => handleImagePrintCheck(famousURL)} className="btn checkbox float-right mt-5 mr-5 w-12 h-4" />
                 <button
-                    className={`btn btn-${isFamousURLGood ? 'primary' : 'secondary'} tooltip tooltip-left float-left mt-5 ml-5 w-12 h-4`}
+                    className={`btn btn-${isFamousURLGood ? 'primary' : 'secondary'} tooltip tooltip-right float-left mt-5 ml-5 w-12 h-4`}
                     data-tip={isFamousURLGood ? "Click to delete image" : "Click to mark image good"}
                     onClick={() => isFamousURLGood
                         ? deleteGoodImage('famous', goodImages.famous.find(good => good.url === famousURL)._id)
@@ -423,6 +422,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 >
                     <i className="fa-solid fa-heart"></i>
                 </button>
+                <input type="checkbox" checked={printingImages.includes(famousURL)} onChange={() => handleImagePrintCheck(famousURL)} data-tip="Check to mark for printing" className="btn checkbox tooltip tooltip-left float-right mt-5 mr-5 w-12 h-4" />
             </figure>
 
             <div className="basis-1/2 card-body text-center">
