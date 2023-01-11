@@ -365,7 +365,7 @@ export default function Api({ user }) {
         }
         <label htmlFor="print-modal" className="btn w-max float-right justify-self-end mr-5"><i className="fa fa-print"></i></label>
 
-        <input type="checkbox" id="print-modal" className="peer hidden" onChange={e => setTimeout(() => window.print(), 100)} />
+        <input type="checkbox" id="print-modal" className="peer hidden" />
         <div className="hidden peer-checked:block cursor-pointer absolute top-0 left-0 right-0 w-[100vw] min-h-[100vh] bg-[#ffffffc4] z-10">
           <div className="flex justify-evenly print:hidden">
             <label htmlFor="print-modal" className="btn btn-pimary">Close</label>
@@ -398,6 +398,9 @@ export default function Api({ user }) {
         unselectGoodImage={unselectGoodImage}
         handleImagePrintCheck={handleImagePrintCheck}
         printingImages={printingImages}
+        hasCartoon={hasCartoon}
+        hasReal={hasReal}
+        hasFamous={hasFamous}
       />
     </div >
   );

@@ -14,7 +14,7 @@ const INITIAL_OVERRIDES = {
     },
 }
 
-export default function Images({ real, cartoon, famous, keyword = 'owl', badImages, addBadImage, addGoodImage, deleteGoodImage, selectGoodImage, unselectGoodImage, undoBadImage, goodImages, submitCustomQuery, customQueries, user, showRerollDialog, setShowRerollDialog, printingImages, handleImagePrintCheck }) {
+export default function Images({ real, cartoon, famous, keyword = 'owl', badImages, addBadImage, addGoodImage, deleteGoodImage, selectGoodImage, unselectGoodImage, undoBadImage, goodImages, submitCustomQuery, customQueries, user, showRerollDialog, setShowRerollDialog, printingImages, handleImagePrintCheck, hasCartoon, hasReal, hasFamous }) {
     const [editingRealQuery, setEditingRealQuery] = useState(false)
     const [editingCartoonQuery, setEditingCartoonQuery] = useState(false)
     const [editingFamousQuery, setEditingFamousQuery] = useState(false)
@@ -75,7 +75,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
             </div>
             {/* hello */}
             <figure className="shrink basis-1/2">
-                {INITIAL_OVERRIDES[keyword]?.real || ((real || selectedRealImage?.url) && keyword) ? <img
+                {INITIAL_OVERRIDES[keyword]?.real || (hasReal && (real || selectedRealImage?.url) && keyword) ? <img
                     src={realURL}
                     alt="Real"
                     className={`aspect-[3/2] mt-4 ${showingRealForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
@@ -93,10 +93,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                             ? deleteGoodImage('real', goodImages.real.find(good => good.url === realURL)._id)
                             : addGoodImage('real', { imageURL: realURL })
                     }}
+                    disabled={!hasReal}
                 >
                     <i className="fa-solid fa-heart"></i>
                 </button>
-                <input type="checkbox" checked={printingImages.includes(realURL)} onChange={() => handleImagePrintCheck(realURL)} data-tip="Check to mark for printing" className="tooltip tooltip-left btn checkbox float-right mt-5 mr-5 w-12 h-4" />
+                <input type="checkbox" checked={printingImages.includes(realURL)} onChange={() => handleImagePrintCheck(realURL)} data-tip="Check to mark for printing" className="tooltip tooltip-left btn checkbox float-right mt-5 mr-5 w-12 h-4" disabled={!hasReal} />
             </figure>
             <div className="basis-3/12 card-body text-center">
                 {showingRealForm ? (
@@ -183,11 +184,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                                     }
                                 }
                             }}
-                            disabled={!keyword}
+                            disabled={!hasReal || !keyword}
                         >
                             Reroll
                         </label>
-                        <button onClick={() => undoBadImage('real')} disabled={!badImages.some(bad => bad.type === 'real')}
+                        <button onClick={() => undoBadImage('real')} disabled={!hasReal || !badImages.some(bad => bad.type === 'real')}
                             className="flex-auto w-[50%] btn btn-secondary text-white"> Undo
                         </button>
                     </div>
@@ -240,7 +241,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 {'Cartoon ' + (keyword || 'Owl')}
             </div>
             <figure className="shrink basis-1/2">
-                {INITIAL_OVERRIDES[keyword]?.cartoon || ((cartoon || selectedRealImage?.url) && keyword) ? <img
+                {INITIAL_OVERRIDES[keyword]?.cartoon || (hasCartoon && (cartoon || selectedRealImage?.url) && keyword) ? <img
                     src={cartoonURL}
                     className={`aspect-[3/2] mt-4 ${showingCartoonForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
                     alt="Cartoon"
@@ -255,10 +256,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     onClick={() => isCartoonURLGood
                         ? deleteGoodImage('cartoon', goodImages.cartoon.find(good => good.url === cartoonURL)._id)
                         : addGoodImage('cartoon', { imageURL: cartoonURL })}
+                    disabled={!hasCartoon}
                 >
                     <i className="fa-solid fa-heart"></i>
                 </button>
-                <input type="checkbox" checked={printingImages.includes(cartoonURL)} onChange={() => handleImagePrintCheck(cartoonURL)} data-tip="Check to mark for printing" className="btn checkbox tooltip tooltip-left float-right mt-5 mr-5 w-12 h-4" />
+                <input type="checkbox" checked={printingImages.includes(cartoonURL)} onChange={() => handleImagePrintCheck(cartoonURL)} data-tip="Check to mark for printing" className="btn checkbox tooltip tooltip-left float-right mt-5 mr-5 w-12 h-4" disabled={!hasCartoon} />
             </figure>
             <div className="basis-3/12 card-body text-center">
                 {showingCartoonForm ? (
@@ -345,7 +347,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                                     }
                                 }
                             }}
-                            disabled={!keyword}
+                            disabled={!hasCartoon || !keyword}
                             className="flex-auto btn w-[50%] btn-primary text-white">
                             Reroll
                         </label>
@@ -353,7 +355,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                         {/* Modal 2 end */}
 
 
-                        <button onClick={() => undoBadImage('cartoon')} disabled={!badImages.some(bad => bad.type === 'cartoon')}
+                        <button onClick={() => undoBadImage('cartoon')} disabled={!hasCartoon || !badImages.some(bad => bad.type === 'cartoon')}
                             className="flex-auto w-[50%] btn btn-secondary text-white"> Undo
                         </button>
                     </div>
@@ -404,7 +406,7 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                 {'Famous ' + (keyword || 'Owl')}
             </div>
             <figure className="shrink basis-1/2">
-                {INITIAL_OVERRIDES[keyword]?.famous || (((customQueries.famous && famous) || selectedFamousImage?.url) && keyword) ? <img
+                {INITIAL_OVERRIDES[keyword]?.famous || (hasFamous && ((customQueries.famous && famous) || selectedFamousImage?.url) && keyword) ? <img
                     src={famousURL}
                     alt="Famous"
                     className={`aspect-[3/2] mt-4 ${showingFamousForm ? 'w-[75%]' : 'w-[95%]'} m-auto rounded-lg drop-shadow-[15px_15px_5px_rgba(0,0,0,.45)]`}
@@ -419,10 +421,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                     onClick={() => isFamousURLGood
                         ? deleteGoodImage('famous', goodImages.famous.find(good => good.url === famousURL)._id)
                         : addGoodImage('famous', { imageURL: famousURL })}
+                    disabled={!hasFamous}
                 >
                     <i className="fa-solid fa-heart"></i>
                 </button>
-                <input type="checkbox" checked={printingImages.includes(famousURL)} onChange={() => handleImagePrintCheck(famousURL)} data-tip="Check to mark for printing" className="btn checkbox tooltip tooltip-left float-right mt-5 mr-5 w-12 h-4" />
+                <input type="checkbox" checked={printingImages.includes(famousURL)} onChange={() => handleImagePrintCheck(famousURL)} data-tip="Check to mark for printing" className="btn checkbox tooltip tooltip-left float-right mt-5 mr-5 w-12 h-4" disabled={!hasFamous} />
             </figure>
 
             <div className="basis-1/2 card-body text-center">
@@ -510,11 +513,11 @@ export default function Images({ real, cartoon, famous, keyword = 'owl', badImag
                                         }
                                     }
                                 }}
-                                disabled={!keyword}>
+                                disabled={!hasFamous || !keyword}>
                                 Reroll
                             </label>
                             {/* modal3 end */}
-                            <button onClick={() => undoBadImage('famous')} disabled={!badImages.some(bad => bad.type === 'famous')}
+                            <button onClick={() => undoBadImage('famous')} disabled={!hasFamous || !badImages.some(bad => bad.type === 'famous')}
                                 className="flex-auto btn w-[50%] btn-secondary text-white"> Undo
                             </button>
                         </div>
