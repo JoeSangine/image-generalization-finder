@@ -325,8 +325,32 @@ export default function Api({ user }) {
     removeBadImage(type);
   }
 
+  const [printingImages, setPrintingImages] = useState([
+    "https://pazlspb.ru/sites/default/files/styles/catmed/public/uploads/1222/pazl_super_3d_nochnoy_strazh_500_elementov.jpg",
+    "https://i.pinimg.com/736x/8e/c7/e9/8ec7e96bf97de75431d67a79a012ca24.jpg",
+    "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/f918f41c-9b07-4abc-b8d0-c27a1602ae90/daoln0v-369faaed-6057-4369-8599-5571b40091b9.jpg/v1/fill/w_1024,h_719,q_75,strp/harry_potter_by_opheliac98-daoln0v.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwic3ViIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl0sIm9iaiI6W1t7InBhdGgiOiIvZi9mOTE4ZjQxYy05YjA3LTRhYmMtYjhkMC1jMjdhMTYwMmFlOTAvZGFvbG4wdi0zNjlmYWFlZC02MDU3LTQzNjktODU5OS01NTcxYjQwMDkxYjkuanBnIiwid2lkdGgiOiI8PTEwMjQiLCJoZWlnaHQiOiI8PTcxOSJ9XV19.LjpKhmrE0QmrFxdrlwyGsp0N9xj4QR9Su8PPNlkAXRM",
+    'https://designlooter.com/images600_/eyes-clipart-9.jpg',
+    "https://cdn.omlet.co.uk/images/cache/300/172/Cat-British_Longhair-A_pale_british_longhait_cat_with_amber_eyes.jpg",
+    "https://i.pinimg.com/originals/cc/57/4e/cc574e12abf0684c09461331b261c338.jpg",
+    "https://www.ketabane.org/wp-content/uploads/2020/02/daafd8b1d8a8d987-da86daa9d985d987-d9bed988d8b4d88cd9bedb8cd986d987-d8b1d988d8b2-3-225x300.jpg",
+    "https://thumbs.dreamstime.com/t/%D0%BE%D1%81%D0%B8%D0%BF%D0%BB%D0%B0%D1%8F-siberian-%D0%B7%D0%B8%D0%BC%D0%B0-17368097.jpg",
+    "https://img2.embroiderydesigns.com/StockDesign/Large/Hopscotch/HS1301031A.jpg",
+    "https://errorhead.pl/uploads/monthly_2019_12/08ea4a0dddfc3f546fccc9c17b1e9ad59acc2d44_full.thumb.jpg.cefacfdf2a560df8aa4131e4ff109a78.jpg",
+    "https://st2.depositphotos.com/1967477/8826/v/380/depositphotos_88267178-stock-illustration-cartoon-funny-mouse-collection-set.jpg"
+  ]);
+
+  const handleImagePrintCheck = url => setPrintingImages(images => {
+    const newImages = [...images];
+    if (newImages.includes(url)) {
+      newImages.splice(newImages.indexOf(url), 1);
+    } else {
+      newImages.push(url);
+    }
+    return newImages;
+  });
+
   return (
-    <div>
+    <div className="print:h-[80vh]">
 
       {/* BELOW is the input forms for rendering the images */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -351,6 +375,23 @@ export default function Api({ user }) {
           </form>
           : null
         }
+        <label htmlFor="print-modal" className="btn w-max float-right justify-self-end mr-5"><i className="fa fa-print"></i></label>
+
+        <input type="checkbox" id="print-modal" className="peer hidden" onChange={e => {
+          console.log({ target: e.target, ct: e.currentTarget });
+          const { currentTarget } = e;
+          if (!currentTarget.checked) return;
+          setTimeout(() => {
+            window.print();
+            //currentTarget.checked = false;
+          }, 100)
+        }} />
+        <div className="hidden peer-checked:block cursor-pointer absolute top-0 left-0 right-0 w-[100vw] min-h-[100vh] bg-[#ffffffc4] z-10">
+          <label htmlFor="print-modal" className="print:hidden">Close</label>
+          <div className="flex gap-1 justify-between flex-wrap">
+            {printingImages.map((img, i) => <img key={img + i} src={img} className="h-[260px] w-[480px] p-1 border border-black border-dotted cursor-pointer" onClick={() => handleImagePrintCheck(img)} />)}
+          </div>
+        </div>
 
       </div>
 
@@ -372,8 +413,10 @@ export default function Api({ user }) {
         deleteGoodImage={deleteGoodImage}
         selectGoodImage={selectGoodImage}
         unselectGoodImage={unselectGoodImage}
+        handleImagePrintCheck={handleImagePrintCheck}
+        printingImages={printingImages}
       />
-    </div>
+    </div >
   );
 }
 

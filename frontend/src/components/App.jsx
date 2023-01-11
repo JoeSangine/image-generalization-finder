@@ -11,7 +11,7 @@ export default function App() {
             .then(user => setUser(user))
 
     }, [])
-    return <div>
+    return <div className="print:overflow-hidden">
         <Nav
             user={user}
             setUser={setUser}
