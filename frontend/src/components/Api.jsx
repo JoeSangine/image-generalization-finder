@@ -3,13 +3,13 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import Images from "./Images";
 
 const fetchFromLaionAPI = async (query, options, page, abortController) => {
-  const response = await fetch("https://knn5.laion.ai/knn-service", {
+  const response = await fetch("https://knn.laion.ai/knn-service", {
     signal: abortController.signal,
     "body": JSON.stringify({
       text: query,
       modality: "image",
       num_images: 50 * page,
-      indice_name: "laion5B",
+      indice_name: "laion5B-H-14",
       use_mclip: false,
       deduplicate: true,
       use_safety_model: true,
