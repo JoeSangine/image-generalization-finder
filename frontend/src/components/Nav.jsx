@@ -101,11 +101,11 @@ export default function Nav({ user, setUser }) {
                     </div>
 
                     <p className="indent-5 tracking-widest">
-                        Autism is a social impairment that makes it difficult for individuals to relate to their surroundings and others. Through Applied Behavior Analysis this website is designed to help with the vital skill of generalization. Generalization is the ability to perform a skill in different circumstances or with different objects. It starts with an idea of exposure to different types of objects (a novel or real life example, a cartoon version and a well known version) to help a learner understand that things can be the same even when they appear to be different.
+                        Autism is a social impairment that makes it difficult for individuals to relate to their surroundings and other people. Through Applied Behavior Analysis, this website is designed to help with the vital skill of generalization. Generalization is the ability to perform a skill in different circumstances, or with different objects. It starts with an idea of exposure to different types of objects (a cartoon version vs a real life example, or a hypothetical vs a well-known version) to help a learner understand that things can be the same even when they appear to be different.
                         <br></br>
                         <br></br>
-                        Once a learner has this skill it can lead to them generalizing things like hi meaning the same thing as hey or that the parts on a bicycle in a picture are also the same as the real bicycle a person can sit on.
-                        Teaching people how to make these connections in the world allows them to better understand everything around them.
+                        Once a learner has this skill, they can better generalize things like "hi" meaning the same thing as "hey." Parts of a bicycle in a picture are also the same as the parts of a real bicycle that a person can sit on.
+                        Teaching people how to make these connections in their environment allows them to better understand everything around them.
                     </p>
 
                     <div className="modal-action">
